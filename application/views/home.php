@@ -42,37 +42,22 @@
 		<div id="revolutionSlider" class="slider rev_slider" data-plugin-revolution-slider data-plugin-options='{"delay": 9000, "gridwidth": 800, "gridheight": 400}'>
 			<ul>
 				<li data-transition="fade">
-
-					<img src="slider/image-3.jpg"
+					<img src="slider/slider1.jpg"
 						alt=""
 						data-bgposition="center center"
 						data-bgfit="cover"
 						data-bgrepeat="no-repeat"
 						class="rev-slidebg">
-
-					<div class="tp-caption bottom-label"
-						data-x="center" data-hoffset="0"
-						data-y="center" data-voffset="5"
-						data-start="2000"
-						style="z-index: 5"
-						data-transform_in="y:[100%];opacity:1;s:500;">Selamat Datang di Website Portal</div>
-
-					<a class="tp-caption btn btn-lg btn-primary btn-slider-action"
-						data-hash
-						data-hash-offset="85"
-						href="#"
-						data-x="center" data-hoffset="0"
-						data-y="center" data-voffset="80"
-						data-start="2200"
-						data-whitespace="nowrap"
-						data-transform_in="y:[100%];s:500;"
-						data-transform_out="opacity:1;s:500;"
-						style="z-index: 5"
-						data-mask_in="x:0px;y:0px;">Dinas Pelayanan Pajak Kota Bandung
-
-					</a>
-						<div class="tp-dottedoverlay tp-opacity-overlay"></div>
 				</li>
+				<li data-transition="fade">
+					<img src="slider/slider2.jpg"
+						alt=""
+						data-bgposition="center center"
+						data-bgfit="cover"
+						data-bgrepeat="no-repeat"
+						class="rev-slidebg">
+				</li>
+
 			</ul>
 		</div>
 	</div>
