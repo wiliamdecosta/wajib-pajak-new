@@ -58,7 +58,6 @@
 					var i = 0;
 					if (data.rows.length > 0){
 						vat_pct = $('#rincian').find(':selected').data('id');
-						alert(vat_pct);
 						$('#val_pajak').val( parseFloat((vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
 						// }
 					} else
@@ -79,7 +78,8 @@
 		});
 		// Hitung Denda		
 		var date_denda_signed = false;
-			$.ajax({							
+			$.ajax
+			({							
 				async: false,
 				url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/get_fined_start",
 				datatype: "json",            
@@ -89,8 +89,12 @@
 				},
 				success: function (response) {
 					var data = $.parseJSON(response);
+					kelipatan_denda = data.rows[0].booldendamonth;
 					if(parseInt(data.rows[0].booldenda) >= 0){
-							$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val()).toFixed(2));
+							if(parseInt(kelipatan_denda > 24)){
+								kelipatan_denda = 24;
+							};
+							$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val() * kelipatan_denda ).toFixed(2) );
 						// }						
 					}else
 					{
@@ -99,7 +103,7 @@
 				}
 			});		
 
-		$('#totalBayar').val( parseFloat(   $('#val_pajak').val()  + $('#val_denda').val()   ).toFixed(2) );
+		$('#totalBayar').val(  parseFloat(   $('#val_pajak').val()  )  + parseFloat(  $('#val_denda').val()   ) );
 		i=0; k=0; j=0;;
 		dataupdate = new Array(); datecreate=new Array();
 		while (i < $("#grid-table-laporan").getRowData().length){

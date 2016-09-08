@@ -24,7 +24,7 @@
 				</div>
 				<div class="checkbox">
 					<label class="control-label">
-						<a href="/images/myw3schoolsimage.jpg">Contoh Excel</a>
+						<a href="<?php echo base_url().'template_upload/contoh_format_file_transaksi_harian_WP.xls';?>">Template Excel</a>
 					</label>
 				</div>
 			</div>
@@ -33,17 +33,12 @@
 			<div class="modal-footer no-margin-top">
 			    <div class="bootstrap-dialog-footer">
 			        <div class="bootstrap-dialog-footer-buttons">
-        				<button class="btn btn-xs radius-4">
-							<i class="ace-icon fa fa-file-excel-o"></i>
-        					<a href="/images/myw3schoolsimage.jpg">
-								Contoh Excel
-							</a>
-						</button>
-						<button class="btn btn-xs radius-4">
+        				
+						<button class="btn btn-md radius-4">
         					<i class="ace-icon fa fa-check"></i>
         					Submit
         				</button>
-						<button class="btn btn-danger btn-xs radius-4" data-dismiss="modal">
+						<button class="btn btn-danger btn-md radius-4" data-dismiss="modal">
         					<i class="ace-icon fa fa-times"></i>
         					Close
         				</button>
@@ -134,8 +129,11 @@
 						success: function (response) {
 							var data = $.parseJSON(response);
 							if(parseInt(data.rows[0].booldenda) >= 0){
-									$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val()).toFixed(2));
-									$('#totalBayar').val( parseFloat(   $('#val_pajak').val()  )  +  parseFloat(  $('#val_denda').val()   ) );
+								if(parseInt(kelipatan_denda > 24)){
+									kelipatan_denda = 24;
+								}
+								$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val() * kelipatan_denda ).toFixed(2) );
+								$('#totalBayar').val(  parseFloat(   $('#val_pajak').val()  )  + parseFloat(  $('#val_denda').val()   ) );
 							}else
 							{
 									$('#val_denda').val(parseFloat(0));

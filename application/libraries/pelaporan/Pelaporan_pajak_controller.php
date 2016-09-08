@@ -471,7 +471,9 @@ class Pelaporan_pajak_controller {
 			$ci->load->model('transaksi/transaksi_harian');
 			$table= $ci->transaksi_harian;
 			
-			$q 	= 	"SELECT DATE_PART('day', current_date::timestamp - TO_DATE('". $nowdate ."'||due_in_day)::timestamp) boolDenda 
+			$q 	= 	"SELECT 
+						DATE_PART('day', current_date::timestamp - TO_DATE('". $nowdate ."'||due_in_day)::timestamp) boolDenda, 
+						ceiling(months_between(current_date::timestamp , TO_DATE('". $nowdate ."'||due_in_day)::timestamp)) boolDendaMonth
 					from p_finance_period 
 					where to_char(start_date,'MM-YYYY') = '". $getdate ."'";
 			// $q 	= " select to_char(start_date,'MM-YYYY'), due_in_day ";
