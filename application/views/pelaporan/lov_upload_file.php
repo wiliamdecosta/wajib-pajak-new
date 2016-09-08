@@ -20,7 +20,12 @@
 						<input type="hidden" placeholder="Upload File disini" name="schema_id" id="upload_input" class="form-control required" aria-required="true">
 						<input type="file" id="excel_trans_cust" name="excel_trans_cust" required/>
 						</div>
-					</div>
+					</div>					
+				</div>
+				<div class="checkbox">
+					<label class="control-label">
+						<a href="/images/myw3schoolsimage.jpg">Contoh Excel</a>
+					</label>
 				</div>
 			</div>
 
@@ -29,6 +34,12 @@
 			    <div class="bootstrap-dialog-footer">
 			        <div class="bootstrap-dialog-footer-buttons">
         				<button class="btn btn-xs radius-4">
+							<i class="ace-icon fa fa-file-excel-o"></i>
+        					<a href="/images/myw3schoolsimage.jpg">
+								Contoh Excel
+							</a>
+						</button>
+						<button class="btn btn-xs radius-4">
         					<i class="ace-icon fa fa-check"></i>
         					Submit
         				</button>
