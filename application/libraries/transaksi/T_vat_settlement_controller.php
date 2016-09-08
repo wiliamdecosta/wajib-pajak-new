@@ -462,7 +462,7 @@ class T_vat_settlement_controller {
     }
 
 	public static function upload_excel($args = array()){
-		$data = array('success' => false, 'message' => '');
+		$data = array('success' => false, 'message' => '', 'omzet_value' => 0);
 		//memanggil perintah sql delete DSR
 		$ci = & get_instance();
 		$ci->load->model('transaksi/t_vat_settlement');
@@ -509,23 +509,18 @@ class T_vat_settlement_controller {
 			$xl_reader->read($file_location);
 			$firstColumn = $xl_reader->sheets[0]['cells'][1][2];
 			
-			$jumlah_hari = substr($end_period,8,2) - substr($start_period,8,2) + 1;
+			$jumlah_hari = (int)substr($end_period,8,2) - substr($start_period,8,2) + 1;
 			$tahun_bulan = substr($start_period,0,8);			
 
-			if ($jumlah_hari != ($xl_reader->sheets[0]['numRows']-3)) {
-				throw new Exception("Laporan masa pajak anda ini tidak sesuai dengan Laporan Rekapitulasi Penerimaan Harian");
-			};
-			
 			$items = array();	
 			$loop_hari = 1;
-			for($i = 3; $i < $xl_reader->sheets[0]['numRows']; $i++) {
-				$temp_date = $tahun_bulan.sprintf("%02d", ($i-3+substr($start_period,8,2)));
-				// print_r($temp_date);exit;
-				if ($temp_date != $xl_reader->sheets[0]['cells'][$i][1]){					
-					throw new Exception("Laporan masa pajak anda ini tidak sesuai dengan Laporan Rekapitulasi Penerimaan Harian");
-				}
+			for($i = 3; $i <= $xl_reader->sheets[0]['numRows']; $i++) {
+				$temp_date = $tahun_bulan.sprintf("%02d", ($i-3+substr($start_period,8,2)));				
 			
 				if($loop_hari <= $jumlah_hari) {
+					if ($temp_date != $xl_reader->sheets[0]['cells'][$i][1]){					
+						throw new Exception("Laporan masa pajak anda ini tidak sesuai dengan Laporan Rekapitulasi Penerimaan Harian. Cek kembali pemilihan masa pajak");
+					}
 					$item['t_cust_account_id'] = $t_cust_account_id; 
 					$item['i_tgl_trans'] =  $xl_reader->sheets[0]['cells'][$i][1]; 	
 					$bills = explode("-", $xl_reader->sheets[0]['cells'][$i][2]);
@@ -543,8 +538,9 @@ class T_vat_settlement_controller {
 					$loop_hari++;
 				}
 			}
-
+			
 			$numItems = count($items);
+			$total_transaksi = 0;
 			for($i=0; $i < $numItems; $i++)
 			{
 				$table->db->trans_begin();
@@ -570,10 +566,11 @@ class T_vat_settlement_controller {
                       "                         case when " . $p_vat_type_dtl_cls_id. " = 0 then null else " . $p_vat_type_dtl_cls_id. " end,".
 				"                         " . $bill_count. ",".
 				"                         '" . $bill_no_end. "')");
-					
+				$total_transaksi += $serve_charge;	
 				$table->db->trans_commit(); 
 			};
 			
+			$data['omzet_value'] = $total_transaksi;
 			$data['success'] = true;
 			$data['message'] = 'Upload file transaksi berhasil dilakukan';
 		}catch(Exception $e) {

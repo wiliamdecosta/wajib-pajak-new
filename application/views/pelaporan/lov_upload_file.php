@@ -79,6 +79,60 @@
 				swal('Informasi',response.message,'info');
 				if (response.success == true){
 					$('#hasExcelUploaded').val(1);
+					$('#omzet_value').val(response.omzet_value);
+				// ________________________ Hitung Perihal Denda, Omzet, Total Bayar
+				$.ajax({
+					async: false,
+					url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/p_vat_type_dtl_cls",
+					datatype: "json",            
+					type: "POST",
+					success: function (response) {
+							var data = $.parseJSON(response);
+							var i = 0;
+							if (data.rows.length > 0){
+								vat_pct = $('#rincian').find(':selected').data('id');
+								alert(vat_pct);
+								$('#val_pajak').val( parseFloat((vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
+								// }
+							} else
+							{
+								$('#rincian_form').hide(100);
+								$.ajax({
+									url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/p_vat_type_dtl",
+									datatype: "json",            
+									type: "POST",
+									success: function (response) {
+										var data = $.parseJSON(response);
+										$('#val_pajak').val( parseFloat((data.rows[0].vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
+									}
+								});			
+							}
+							$('#modal_lov_form_harian').modal('hide');
+					}
+				});
+				// Hitung Denda		
+				var date_denda_signed = false;
+					$.ajax({							
+						async: false,
+						url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/get_fined_start",
+						datatype: "json",            
+						type: "POST",
+						data: {nowdate:moment($('#datepicker').val()).format("YYYY-MM-"),
+								getdate:moment($('#datepicker').val()).format("MM-YYYY")
+						},
+						success: function (response) {
+							var data = $.parseJSON(response);
+							if(parseInt(data.rows[0].booldenda) >= 0){
+									$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val()).toFixed(2));
+									$('#totalBayar').val( parseFloat(   $('#val_pajak').val()  )  +  parseFloat(  $('#val_denda').val()   ) );
+							}else
+							{
+									$('#val_denda').val(parseFloat(0));
+									$('#totalBayar').val( parseFloat(   $('#val_pajak').val()    ).toFixed(2) );
+							};
+						}
+					});		
+				// ________________________				
 				}
 			},
 			cache:false,

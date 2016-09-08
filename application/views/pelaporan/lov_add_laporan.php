@@ -177,9 +177,18 @@
 		$('#omzet_value').val("");
 		$('#val_pajak').val("");
 		$('#val_denda').val("");
-		$('#totalBayar').val("");
-		
-		
+		$('#totalBayar').val("");		
+	});
+	
+	$('#rincian').change(function(){
+		// $('#omzet_value').val();
+		nilai_pajak = $('#rincian').find(':selected').data('id');
+		$('#val_pajak').val(  $('#omzet_value').val() * nilai_pajak * 0.01);
+		if ($('#val_denda').val() != 0)
+		{
+			$('#val_denda').val(  parseFloat(0.02 * $('#val_pajak').val()).toFixed(2)  );
+		}		
+		$('#totalBayar').val(   parseFloat( $('#val_pajak').val() )  +  parseFloat(  $('#val_denda').val() ) );
 	});
 	
 	
@@ -228,15 +237,17 @@
 	$('#submit-btn').on('click',function() {		
 		nilai_total = $('#totalBayar').val();
 		
-		text_submit = 	"<div align='left'><h5>Wajib Pajak yang terhormat</br>"+
-						"Anda Melaporkan pajak daerah untuk : </br>"+
-						"NPWPD 			:	"+ $('#klasifikasi').find(':selected').val() +"</br>"+
-						"Klasifikasi 	: 	"+ $('#klasifikasi').find(':selected').val() +"</br>"+
-						"Masa Pajak 	: 	"+ $('#months').find(':selected').val() +"</br>"+
-						"Pajak Pokok 	: 	Rp."+ $('#val_pajak').val() +"</br>"+
-						"Denda 			: 	Rp."+ $('#val_denda').val() +"</br>"+
-						"Jumlah Pajak yang harus dibayar 	: 	Rp."+ $('#totalBayar').val() +"</br>"+
-						"Apakah anda yakin akan mengirim laporan dimaksud?</h5></div>";
+		text_submit = 	"<h5>Wajib Pajak yang terhormat, "+
+						"Anda Melaporkan pajak daerah untuk : </h5>"+
+						"<pre style='text-align:left;'>" + 
+						"NPWPD 		 	: "+ $('#npwd').val() + "\n" +
+						"Klasifikasi 		: "+ $('#klasifikasi').find(':selected').val() + "\n" +
+						"Masa Pajak  		: "+ $('#months').find(':selected').val() + "\n" +
+						"Pajak Pokok 		: Rp."+ $('#val_pajak').val() + "\n" +
+						"Denda 		 	: Rp."+ $('#val_denda').val() + "\n" +
+						"Jumlah Pajak yang harus dibayar : Rp."+ $('#totalBayar').val() +
+						"</pre>"+
+						"<h5>Apakah anda yakin akan mengirim laporan dimaksud?</h5>";
 		if(nilai_total.length == 0 && $('#hasExcelUploaded').val() == 0)
 		{
 			swal('Error','Harap mengisi data secara lengkap sebelum submit','error');
@@ -252,8 +263,7 @@
 				confirmButtonText: "Ya",
 				cancelButtonText: "Tidak",
 				confirmButtonClass: 'btn btn-success',
-				cancelButtonClass: 'btn btn-danger',
-				buttonsStyling: false
+				cancelButtonClass: 'btn btn-danger'
 				// closeOnConfirm: true,
 				// closeOnCancel: true
 			}).then	
@@ -302,8 +312,10 @@
 								}
 						});
 				},
-				function(dismiss) {}
-				);
+				function(dismiss) {
+					
+				}
+			);
 		}
 		
 	});

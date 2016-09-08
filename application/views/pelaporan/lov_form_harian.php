@@ -57,10 +57,9 @@
 					var data = $.parseJSON(response);
 					var i = 0;
 					if (data.rows.length > 0){
-						// while(i<=data.rows.length){
-							// $('#rincian').append('<option value='+ data.rows[0].vat_code +' data-id='+ data.rows[0].vat_pct +'>'+ data.rows[0].vat_code +'</option>');
-						// i++;	
-						$('#val_pajak').val( parseFloat((data.rows[0].vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
+						vat_pct = $('#rincian').find(':selected').data('id');
+						alert(vat_pct);
+						$('#val_pajak').val( parseFloat((vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
 						// }
 					} else
 					{
@@ -78,7 +77,7 @@
 					$('#modal_lov_form_harian').modal('hide');
 			}
 		});
-		
+		// Hitung Denda		
 		var date_denda_signed = false;
 			$.ajax({							
 				async: false,
@@ -91,10 +90,6 @@
 				success: function (response) {
 					var data = $.parseJSON(response);
 					if(parseInt(data.rows[0].booldenda) >= 0){
-						// if(parseFloat($('#val_pajak').val()) > 0 )
-						// {	
-							
-							// alert(parseFloat(2 / 100 * parseFloat($('#val_pajak').val() )).toFixed(2));
 							$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val()).toFixed(2));
 						// }						
 					}else
@@ -103,17 +98,7 @@
 					};
 				}
 			});		
-		// Hitung Denda
-		i = 0; val_akhir = 0; val_denda = 0;
-		// while (i < $("#grid-table-laporan").getRowData().length){
-			// rowId = $('#grid-table-laporan').jqGrid('getCell',i,'keyid');
-			// if(rowId == -1){
-				// alert( parseFloat($('#val_pajak').val() ) );
-				// $('#val_denda').val( parseFloat( $('#val_pajak').val() ) * 2 / 100 );
-				// break;
-			// }	 			
-		// i++;
-		// }			
+
 		$('#totalBayar').val( parseFloat(   $('#val_pajak').val()  + $('#val_denda').val()   ).toFixed(2) );
 		i=0; k=0; j=0;;
 		dataupdate = new Array(); datecreate=new Array();
@@ -311,7 +296,8 @@
 					
 				// }
 			}
-		});		
+		});	
+		$('#grid-table-laporan').jqGrid("clearGridData");		
 		$('#grid-table-laporan').trigger( 'reloadGrid' );
 		jQuery("#grid-table-laporan").jqGrid('setGridParam',
 				{ 
