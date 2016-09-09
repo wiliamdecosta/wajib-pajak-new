@@ -189,6 +189,7 @@
 			$('#val_denda').val(  parseFloat(0.02 * $('#val_pajak').val()).toFixed(2)  );
 		}		
 		$('#totalBayar').val(   parseFloat( $('#val_pajak').val() )  +  parseFloat(  $('#val_denda').val() ) );
+
 	});
 	
 	
@@ -234,21 +235,31 @@
 						
     });
 	
-	$('#submit-btn').on('click',function() {		
-		nilai_total = $('#totalBayar').val();
+	function formatRupiahCurrency(total) {
+    var neg = false;
+    if(total < 0) {
+        neg = true;
+        total = Math.abs(total);
+    }
+    return (neg ? "-$" : 'Rp') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+}
+	
+	
+	$('#submit-btn').on('click',function() {
 		
+		nilai_total = $('#totalBayar').val();
 		text_submit = 	"<h5>Wajib Pajak yang terhormat, "+
 						"Anda Melaporkan pajak daerah untuk : </h5>"+
 						"<pre style='text-align:left;'>" + 
 						"NPWPD 		 	: "+ $('#npwd').val() + "\n" +
 						"Klasifikasi 		: "+ $('#klasifikasi').find(':selected').val() + "\n" +
 						"Masa Pajak  		: "+ $('#months').find(':selected').val() + "\n" +
-						"Pajak Pokok 		: Rp."+ $('#val_pajak').val() + "\n" +
-						"Denda 		 	: Rp."+ $('#val_denda').val() + "\n" +
-						"Jumlah Pajak yang harus dibayar : Rp."+ $('#totalBayar').val() +
+						"Pajak Pokok 		: "+ formatRupiahCurrency($('#val_pajak').val()) + "\n" +
+						"Denda 		 	: "+ formatRupiahCurrency($('#val_denda').val()) + "\n" +
+						"Jumlah Pajak yang harus dibayar : <b>"+  formatRupiahCurrency($('#totalBayar').val()) +"</b>"+
 						"</pre>"+
 						"<h5>Apakah anda yakin akan mengirim laporan dimaksud?</h5>";
-		if(nilai_total.length == 0 && $('#hasExcelUploaded').val() == 0)
+		if(nilai_total.length == 0)
 		{
 			swal('Error','Harap mengisi data secara lengkap sebelum submit','error');
 		} else
