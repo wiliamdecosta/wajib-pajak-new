@@ -59,13 +59,21 @@
                 {label: 'Tgl Lapor', name: 'tgl_pelaporan', align:'center', hidden: false, editable: true},
                 {label: 'Total Transaksi (Rp)', name: 'total_transaksi', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'Pajak Terutang (Rp)', name: 'total_pajak', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
-                {label: 'No Bayar', name: 'payment_key', hidden: false, editable: true},
+                {label: 'No Bayar', name: 'payment_key', hidden: false, editable: true, formatter:function(cellvalue,options,rowObject){
+					var is_employee = rowObject['is_employee'];
+					var is_surveyed = rowObject['is_surveyed'];
+					if(is_employee == 'Y') return cellvalue;
+					if(is_surveyed == 'Y') return cellvalue;
+					return '';					
+				}},
                 {label: 'Sanksi Adm 25% (Rp)', name: 'kenaikan', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'Sanksi Adm 2% (Rp)', name: 'kenaikan1', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'Denda (Rp)', name: 'total_denda', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'No. Kuitansi', name: 'kuitansi_pembayaran', width:450, hidden: false, editable: true},
                 {label: 'Jumlah Bayar (Rp)', name: 'total_hrs_bayar', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
-                {label: 'Keterangan', name: 'lunas', align:'center', hidden: false, editable: true}
+                {label: 'Keterangan', name: 'lunas', align:'center', hidden: false, editable: true},
+				{label: 'is_employee', name: 'is_employee', hidden: true},
+				{label: 'is_surveyed', name: 'is_surveyed', hidden: true}
 			],
             height: '100%',
 			width:'100%',
