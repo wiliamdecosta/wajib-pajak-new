@@ -11,7 +11,7 @@
     </ul>
 </div>
 <!-- end breadcrumb -->
-	
+
 <div class="space-4"></div>
 
 <div>
@@ -21,16 +21,16 @@
 			<div id="grid-pager-trans"></div>
 		</div>
 	</div>
-	
+
 	<div class="space-4"></div>
-	
+
 	<div class="row">
 		<div class="col-md-12" id="tabledetails" style="display:none">
 			<table id="grid-table-detail"></table>
 			<div id="grid-pager-detail"></div>
 		</div>
 	</div>
-	
+
 </div>
 
 <script>
@@ -43,11 +43,11 @@
             datatype: "json",
             mtype: "POST",
 			colModel: [
-                {label: 'Bulan', name: 'code', align:'center',hidden: false},                
+                {label: 'Bulan', name: 'code', align:'center',hidden: false},
                 {label: 'Masa Pajak', name: '', width:180, align:'center',hidden: false, formatter:function(cellvalue, options, rowObject){
 					return rowObject['start_period'] + ' s.d ' + rowObject['end_period'];
-				}},                
-                {label: 'p_vat', name: 'p_vat_type_dtl_id', hidden: true},                
+				}},
+                {label: 'p_vat', name: 'p_vat_type_dtl_id', hidden: true},
                 {label: 'Status', name: 'p_order_status_id', hidden: false, width:200, editable: true, align:'center', formatter:function(cellvalue, options, rowObject){
 					if(cellvalue == "" || cellvalue == null){
 						return 'Laporan Belum Dikirim';
@@ -58,9 +58,9 @@
 					}
 				}},
                 {label: 'Jumlah Transaksi (Rp)', name: 'jum_trans', width:200, hidden: false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right',editable: true},
-                {label: 'Jumlah Pajak (Rp)' , name: 'jum_pajak', width:150, hidden: false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', editable: true},                
-                {label: 'Start Date', name: 'start_period', hidden: true, align:'center', editable: true},               
-                {label: 'End Date', name: 'end_period', hidden: true, align:'center', editable: true}                
+                {label: 'Jumlah Pajak (Rp)' , name: 'jum_pajak', width:150, hidden: false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', editable: true},
+                {label: 'Start Date', name: 'start_period', hidden: true, align:'center', editable: true},
+                {label: 'End Date', name: 'end_period', hidden: true, align:'center', editable: true}
 			],
             height: '100%',
             autowidth: true,
@@ -70,10 +70,10 @@
             rownumbers: true, // show row numbers
             rownumWidth: 35, // the width of the row numbers columns
             altRows: true,
-            shrinkToFit: false,
+            shrinkToFit: true,
             multiboxonly: true,
             onSelectRow: function (rowid) {
-				
+
                 /*do something when selected*/
                 var grid_id = jQuery("#grid-table-trans");
                 var grid_id2 = jQuery("#grid-table-detail");
@@ -119,7 +119,7 @@
                 edit: false,
 				excel: true,
                 editicon: 'fa fa-pencil blue bigger-120',
-                add: false,				
+                add: false,
                 addicon: 'fa fa-plus-circle purple bigger-120',
                 del: false,
                 delicon: 'fa fa-trash-o red bigger-120',
@@ -244,7 +244,7 @@
             }
         )
     });
-	
+
 	jQuery(function($) {
         var grid_selector = "#grid-table-detail";
         var pager_selector = "#grid-pager-detail";
@@ -253,11 +253,11 @@
             datatype: "json",
             mtype: "POST",
 			colModel: [
-                {label: 'idkey', name: 't_cust_acc_dtl_trans_id', key:true, hidden: true},                
-                {label: 'Tanggal Transaksi', name: 'trans_date', align:'center', hidden: false},                
+                {label: 'idkey', name: 't_cust_acc_dtl_trans_id', key:true, hidden: true},
+                {label: 'Tanggal Transaksi', name: 'trans_date', align:'center', hidden: false},
                 {label: 'No Faktur', name: 'bill_no', hidden: false, editable: true},
                 {label: 'Deskripsi', name: 'service_desc', hidden: false, editable: true},
-                {label: 'Nilai Transaksi (Rp)', name: 'service_charge', align:'right',hidden: false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, editable: true}                
+                {label: 'Nilai Transaksi (Rp)', name: 'service_charge', align:'right',hidden: false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, editable: true}
 			],
             height: '100%',
 			width:600,
@@ -270,7 +270,7 @@
             altRows: true,
             shrinkToFit: true,
             multiboxonly: true,
-            onSelectRow: function (rowid) {       
+            onSelectRow: function (rowid) {
 
             },
             sortorder:'',
@@ -297,7 +297,7 @@
                 edit: false,
 				excel: true,
                 editicon: 'fa fa-pencil blue bigger-120',
-                add: false,				
+                add: false,
                 addicon: 'fa fa-plus-circle purple bigger-120',
                 del: true,
                 delicon: 'fa fa-trash-o red bigger-120',
@@ -422,8 +422,8 @@
             }
         )
     });
-	
-		
+
+
 	function serializeJSON(postdata) {
         var items;
         if(postdata.oper != 'del') {
