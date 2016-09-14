@@ -98,7 +98,7 @@
 						// }						
 					}else
 					{
-							$('#val_denda').val(parseFloat(0));
+							$('#val_denda').val((0));
 					};
 				}
 			});		
@@ -301,6 +301,7 @@
 				// }
 			}
 		});	
+		
 		$('#grid-table-laporan').jqGrid("clearGridData");		
 		$('#grid-table-laporan').trigger( 'reloadGrid' );
 		jQuery("#grid-table-laporan").jqGrid('setGridParam',

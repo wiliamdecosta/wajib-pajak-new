@@ -144,10 +144,7 @@
 					}					
 			}
         });
-	});	
-    
-
-    $('#months').click(function(){
+		
 		$.ajax({
             // async: false,
 			url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/pelaporan_bulan",
@@ -155,7 +152,7 @@
             type: "POST",
             success: function (response) {
 				var data = $.parseJSON(response);
-				i = 0;
+				i = 0;				
 				while(i < data.rows.length){
 				var months = data.rows[i].code;
 				var start_date = data.rows[i].start_date_string;
@@ -166,12 +163,16 @@
 				}
 			}
         });
+		
+	});	
+    
+
+    $('#months').click(function(){			
 	});
 	
 	$('#months').change(function(){
 		StartDate = $('#months').find(':selected').val();		
-		EndDate = $('#months').find(':selected').data("id");
-				
+		EndDate = $('#months').find(':selected').data("id");		
 		$("#datepicker").datepicker('setDate',StartDate);
 		$("#datepicker2").datepicker('setDate',EndDate);
 		$('#omzet_value').val("");

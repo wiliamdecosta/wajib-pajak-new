@@ -10,7 +10,7 @@ class History_transaksi_controller {
 
         $page = getVarClean('page','int',1);
         $limit = getVarClean('rows','int',5);
-        $sidx = getVarClean('sidx','str','settlemnet_date');
+        $sidx = getVarClean('sidx','str','settlement_date');
         $sord = getVarClean('sord','str','desc');
 
         $data = array('rows' => array(), 'page' => 1, 'records' => 0, 'total' => 1, 'success' => false, 'message' => '');
@@ -19,7 +19,7 @@ class History_transaksi_controller {
 
             $ci = & get_instance();
             $ci->load->model('history/history_transaksi');
-			$t_cust_account_id = $ci->session->userdata('');
+			$t_cust_account_id = $ci->session->userdata('cust_account_id');
 			$table = new History_transaksi($t_cust_account_id);
 
             $req_param = array(
