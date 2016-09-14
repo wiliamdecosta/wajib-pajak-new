@@ -35,25 +35,25 @@
 			<form class="form-horizontal">
 			  <div class="form-group">
 				<label class="col-md-2 control-label">NPWPD:</label>
-				<div class="col-md-3">
+				<div class="col-md-3 input-group">
 				  <input type="text" class="form-control" id="npwd" readonly="" value="<?php echo $this->session->userdata('npwd'); ?>">
 				</div>
 			  </div>
 			  <div class="form-group">
 				<label class="col-md-2 control-label">PERIODE:</label>
-				<div class="col-md-3">
+				<div class="col-md-4 input-group">
 				  <select id="months" class="form-control"></select>
 				</div>
 			  </div>
 			  <div class="form-group">
 				<label class="col-md-2 control-label">Klasifikasi:</label>
-				<div class="col-md-3">
+				<div class="col-md-4 input-group">
 				  <select id="klasifikasi" class="form-control"></select>
 				</div>
 			  </div>
 			  <div class="form-group" id="rincian_form">
 				<label class="col-md-2 control-label">Rincian:</label>
-				<div class="col-md-3">
+				<div class="col-md-4 input-group">
 				  <select id="rincian" class="form-control"></select>
 				</div>
 			  </div>
@@ -66,7 +66,7 @@
 				</div>
 			  </div>
 			  <div class="form-group">
-				<div class="col-md-offset-2 col-md-6 form-inline">
+				<div class="col-md-offset-2 col-md-6 input-group">
 					<a class="btn btn-primary" id="isiformupload">Upload File Transaksi</a>
 					<label>atau</label>
 					<a class="btn btn-primary" id="isiformtransaksi">Isi Form Transaksi</a>
@@ -74,25 +74,37 @@
 			  </div>
 			  <div class="form-group">
 				<label class="col-md-2 control-label">Nilai Omzet:</label>
-				<div class="col-md-3">
+				<div class="col-md-3 input-group">
+				<span class="input-group-addon">
+					<i><b>Rp</b></i>
+				</span>
 				  <input class="form-control" readonly="" id="omzet_value"  style="text-align:right;">
 				</div>
 			  </div>
 			  <div class="form-group">
 				<label class="col-md-2 control-label">Pajak yang Harus dibayar:</label>
-				<div class="col-md-3">
+				<div class="col-md-3 input-group">
+				<span class="input-group-addon">
+					<i><b>Rp</b></i>
+				</span>
 				  <input class="form-control" readonly=""  id="val_pajak" style="text-align:right;">
 				</div>
 			  </div>
 			  <div class="form-group">
 				<label class="col-md-2 control-label">Denda:</label>
-				<div class="col-md-3">
+				<div class="col-md-3 input-group">
+				<span class="input-group-addon">
+					<i><b>Rp</b></i>
+				</span>
 				  <input class="form-control" readonly=""  id="val_denda" style="text-align:right;">
 				</div>
 			  </div>
 			  <div class="form-group">
 				<label class="col-md-2 control-label">Total Bayar:</label>
-				<div class="col-md-3">
+				<div class="col-md-3 input-group">
+				<span class="input-group-addon">
+					<i><b>Rp</b></i>
+				</span>
 				  <input class="form-control" readonly=""  id="totalBayar" style="text-align:right;">
 				</div>
 			  </div>
@@ -242,7 +254,7 @@
         neg = true;
         total = Math.abs(total);
     }
-    return (neg ? "-$" : 'Rp') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+    return (neg ? "-$" : 'Rp. ') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
 }
 	
 	
@@ -260,7 +272,7 @@
 						"Jumlah Pajak yang harus dibayar : <b>"+  formatRupiahCurrency($('#totalBayar').val()) +"</b>"+
 						"</pre>"+
 						"<h5>Apakah anda yakin akan mengirim laporan dimaksud?</h5>";
-		if(nilai_total.length == 0)
+		if(nilai_total.length == 0 || nilai_total == 0)
 		{
 			swal('Error','Harap mengisi data secara lengkap sebelum submit','error');
 		} else

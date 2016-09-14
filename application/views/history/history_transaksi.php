@@ -77,6 +77,7 @@
 			],
             height: '100%',
 			width:'100%',
+			cmTemplate: { sortable: false },
             autowidth: false,
             viewrecords: true,
             rowNum: 10,
