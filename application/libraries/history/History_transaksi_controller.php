@@ -10,16 +10,16 @@ class History_transaksi_controller {
 
         $page = getVarClean('page','int',1);
         $limit = getVarClean('rows','int',5);
-        $sidx = getVarClean('sidx','str','t_vat_setllement_id');
+        $sidx = getVarClean('sidx','str','settlemnet_date');
         $sord = getVarClean('sord','str','desc');
 
         $data = array('rows' => array(), 'page' => 1, 'records' => 0, 'total' => 1, 'success' => false, 'message' => '');
 		
-		$t_cust_account_id = 2;
         try {
 
             $ci = & get_instance();
             $ci->load->model('history/history_transaksi');
+			$t_cust_account_id = $ci->session->userdata('');
 			$table = new History_transaksi($t_cust_account_id);
 
             $req_param = array(
