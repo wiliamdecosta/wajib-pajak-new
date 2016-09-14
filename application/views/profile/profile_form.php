@@ -76,10 +76,11 @@
 $('#conf_val').keyup(function(){
 	 if ($('#conf_val').val() != $('#pwd_val').val()){
 		 $('#notif_val').html("Password tidak sesuai");
-		// alert($('#conf_val').val() +' - '+ $('#pwd_val').val());
+		$('#notif_val').css('color', 'black');
 	}
 	else{
 		$('#notif_val').html("Password sudah sesuai");
+		$('#notif_val').css('color', 'black');
 	}
 });
 

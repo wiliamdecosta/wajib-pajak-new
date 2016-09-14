@@ -55,6 +55,13 @@
         </a>
     </li>
 
+	<li class="nav-item" data-source="">
+		<a href="#" class="nav-link nav-toggle">
+			<i class="fa fa-wifi"></i>
+			<span class="title">Tapping Modem</span>
+		</a>
+	</li>
+
    <!-- <li class="nav-item" data-source="message.inbox_message">
         <a href="#" class="nav-link nav-toggle">
             <i class="fa fa-inbox"></i>

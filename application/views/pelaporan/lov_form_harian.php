@@ -392,6 +392,12 @@
 					// $('#simpan').unbind("click");
 					$('#simpan').attr('disabled', true);
 				},
+				afterSubmitCell:function(){
+					$('#simpan').attr('disabled', false);
+				},
+				afterRestoreCell:function(){
+					$('#simpan').attr('disabled', true);
+				},
 				afterSaveCell:function(rowid){
 					// alert('d');
 					$('#simpan').attr('disabled', false);
