@@ -75,17 +75,17 @@ $query_builder = TRUE;
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] ='localhost';
+$db['default']['hostname'] ='45.118.112.231';
 
 $db['default']['username'] = 'sikp';
 $db['default']['password'] = 'sikp';
-$db['default']['database'] = 'sikp_db';
+$db['default']['database'] = 'sikp_backup_01_12_2016';
 $db['default']['schema']   = 'sikp';
 $db['default']['port']     = 5444;
 $db['default']['dbdriver'] = 'postgre';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = FALSE;
-$db['default']['db_debug'] = TRUE;
+$db['default']['db_debug'] = FALSE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';
 $db['default']['char_set'] = 'utf8';
