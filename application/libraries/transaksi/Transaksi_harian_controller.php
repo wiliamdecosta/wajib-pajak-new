@@ -11,7 +11,7 @@ class Transaksi_harian_controller {
         // $user_name = getVarClean('user_name','str',32);        
 		$page = getVarClean('page','int',1);
         $limit = getVarClean('rows','int',5);
-        $sidx = getVarClean('sidx','str','t_cust_account_id');
+        $sidx = getVarClean('sidx','str','start_period');
         $sord = getVarClean('sord','str','desc');
 		
         $data = array('rows' => array(), 'page' => 1, 'records' => 0, 'total' => 1, 'success' => false, 'message' => '');

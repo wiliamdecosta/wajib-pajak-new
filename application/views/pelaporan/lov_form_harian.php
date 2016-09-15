@@ -344,7 +344,7 @@
 							}
 						}
 					},
-					{label: 'Jml.Penjualan', name: 'jum_penjualan', width:150, hidden: false, align:'right',editable: true, cellEdit: true, editrules:{number:true},
+					{label: 'Jml.Penjualan', name: 'jum_penjualan', width:150, hidden: false, align:'right', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, editable: true, cellEdit: true, editrules:{number:true},
 						// editoptions: { dataInit: function (elem) 
 							// { 
 								// $(elem).numeric(/*some optional parameters*/); 
