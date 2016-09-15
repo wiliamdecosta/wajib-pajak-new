@@ -82,6 +82,7 @@
 			dataType:'json',
 			data: formData,
 			success: function(response) {
+				$('#modal_upload_file').modal('toggle');
 				swal('Informasi',response.message,'info');
 				if (response.success == true){
 					$('#hasExcelUploaded').val(1);
@@ -97,7 +98,6 @@
 							var i = 0;
 							if (data.rows.length > 0){
 								vat_pct = $('#rincian').find(':selected').data('id');
-								alert(vat_pct);
 								$('#val_pajak').val( parseFloat((vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
 								// }
 							} else

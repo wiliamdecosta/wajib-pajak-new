@@ -24,24 +24,43 @@
             </div>
             <!-- modal footer -->
             <div class="modal-footer no-margin-top">
-                <div class="bootstrap-dialog-footer">
+                <div class="bootstrap-dialog-footer" id="dialog_footer">
                     <div class="bootstrap-dialog-footer-buttons">
                         <button class="btn btn-default btn-md radius-4" id="simpan">
                             <i class="ace-icon fa fa-floppy"></i>
                             Simpan
                         </button>
-						<button class="btn btn-danger btn-md radius-4" data-dismiss="modal" id="exitmodal">
+						<button class="btn btn-danger btn-md radius-4" data-dismiss="" id="exitmodal">
                             <i class="ace-icon fa fa-times"></i>
                             Close
                         </button>
                     </div>
                 </div>
+				<div id="footer_notif_close" style="display: none;">
+					<h5>
+						Apakah Anda yakin ingin menutup form ini? Semua perubahan tidak akan tersimpan
+					</h5>					
+					<button class="btn btn-default btn-md radius-4" id="cancel_footer">
+						Tidak
+					</button>
+					<button class="btn btn-danger btn-md radius-4" data-dismiss="modal" >
+						Ya, tutup form harian
+					</button>
+				</div>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.end modal -->
 
 <script>
+	$('#exitmodal').click(function(){
+		$('#footer_notif_close').show(500);		
+		$('#dialog_footer').hide(500);		
+	});
+	$('#cancel_footer').click(function(){
+		$('#footer_notif_close').hide(500);		
+		$('#dialog_footer').show(500);		
+	});
 	$('#simpan').click(function(){
 		var $grid = $('#grid-table-laporan');
 		var colSum = $grid.jqGrid('getCol', 'jum_penjualan', false, 'sum');
