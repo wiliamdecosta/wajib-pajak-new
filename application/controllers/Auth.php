@@ -17,8 +17,8 @@ class Auth extends CI_Controller {
 	}
 
     public function login() {
-        $username = $this->input->post('username');
-        $password = $this->input->post('password');
+        $username = $this->security->xss_clean($this->input->post('username'));
+        $password = $this->security->xss_clean($this->input->post('password'));
 
         if(empty($username) or empty($password)) {
             $this->session->set_flashdata('error_message','Username atau password harus diisi');
@@ -49,10 +49,10 @@ class Auth extends CI_Controller {
         }
 
 		$sql = "select * from sikp.f_get_npwd_by_username('".$row['user_name']."')";
-		
+
         $query = $this->db->query($sql);
         $row2 = $query->row_array();
-		
+
         $userdata = array(
                         'user_id'           => $row['user_id'],
                         'user_name'         => $row['user_name'],

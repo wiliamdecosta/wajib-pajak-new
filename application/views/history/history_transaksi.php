@@ -54,24 +54,24 @@
                 {label: 'start_period', name: 'start_period', hidden: true},
                 {label: 'end_period', name: 'end_period', hidden: true},
 
-                {label: 'Jenis', name: 'type_code', hidden: false},
-                {label: 'Periode', name: 'periode_pelaporan', hidden: false, editable: true},
-                {label: 'Tgl Lapor', name: 'tgl_pelaporan', align:'center', hidden: false, editable: true},
-                {label: 'Total Transaksi (Rp)', name: 'total_transaksi', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
-                {label: 'Pajak Terutang (Rp)', name: 'total_pajak', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
-                {label: 'No Bayar', name: 'payment_key', hidden: false, editable: true, formatter:function(cellvalue,options,rowObject){
+                {label: 'Jenis', name: 'type_code', sortable:false, hidden: false},
+                {label: 'Periode', name: 'periode_pelaporan', sortable:false, hidden: false, editable: true},
+                {label: 'Tgl Lapor', name: 'tgl_pelaporan', align:'center', sortable:false, hidden: false, editable: true},
+                {label: 'Total Transaksi (Rp)', name: 'total_transaksi', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
+                {label: 'Pajak Terutang (Rp)', name: 'total_pajak', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
+                {label: 'No Bayar', name: 'payment_key', hidden: false, sortable:false, editable: true, formatter:function(cellvalue,options,rowObject){
 					var is_employee = rowObject['is_employee'];
 					var is_surveyed = rowObject['is_surveyed'];
 					if(is_employee == 'Y') return cellvalue;
 					if(is_surveyed == 'Y') return cellvalue;
-					return '';					
+					return '';
 				}},
-                {label: 'Sanksi Adm 25% (Rp)', name: 'kenaikan', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
-                {label: 'Sanksi Adm 2% (Rp)', name: 'kenaikan1', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
-                {label: 'Denda (Rp)', name: 'total_denda', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
-                {label: 'No. Kuitansi', name: 'kuitansi_pembayaran', width:450, hidden: false, editable: true},
-                {label: 'Jumlah Bayar (Rp)', name: 'total_hrs_bayar', formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
-                {label: 'Keterangan', name: 'lunas', align:'center', hidden: false, editable: true},
+                {label: 'Sanksi Adm 25% (Rp)', name: 'kenaikan', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
+                {label: 'Sanksi Adm 2% (Rp)', name: 'kenaikan1', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
+                {label: 'Denda (Rp)', name: 'total_denda', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
+                {label: 'No. Kuitansi', name: 'kuitansi_pembayaran', sortable:false, width:450, hidden: false, editable: true},
+                {label: 'Jumlah Bayar (Rp)', name: 'total_hrs_bayar', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
+                {label: 'Keterangan', name: 'lunas', align:'center', sortable:false, hidden: false, editable: true},
 				{label: 'is_employee', name: 'is_employee', hidden: true},
 				{label: 'is_surveyed', name: 'is_surveyed', hidden: true}
 			],
