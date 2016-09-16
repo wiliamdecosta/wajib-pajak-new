@@ -41,7 +41,7 @@
 			                                    <div class="form-group">
 			                                        <div class="col-md-12">
 			                                            <label>Password</label>
-			                                            <input type="password" name="password" class="form-control input-lg" value="">
+			                                            <input type="password" name="password" class="form-control input-lg" autocomplete="off" value="">
 			                                        </div>
 			                                    </div>
 			                                </div>
