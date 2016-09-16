@@ -31,9 +31,9 @@ class Auth extends CI_Controller {
                     email_address as user_email,
                     full_name as user_realname,
                     p_user_status_id as user_status
-                    from sikp.p_app_user where app_user_name = '".$username."'";
+                    from sikp.p_app_user where app_user_name = ?";
 
-        $query = $this->db->query($sql);
+        $query = $this->db->query($sql, array($username));
         $row = $query->row_array();
 
         $md5pass = md5(trim($password));
