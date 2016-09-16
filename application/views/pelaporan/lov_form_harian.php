@@ -30,7 +30,7 @@
                             <i class="ace-icon fa fa-floppy"></i>
                             Simpan
                         </button>
-						<button class="btn btn-danger btn-md radius-4" data-dismiss="" id="exitmodal">
+						<button class="btn btn-danger btn-md radius-4" id="exitmodal">
                             <i class="ace-icon fa fa-times"></i>
                             Close
                         </button>
@@ -43,7 +43,7 @@
 					<button class="btn btn-default btn-md radius-4" id="cancel_footer">
 						Tidak
 					</button>
-					<button class="btn btn-danger btn-md radius-4" data-dismiss="modal" >
+					<button class="btn btn-danger btn-md radius-4" data-dismiss="modal" id="exit_footer">
 						Ya, tutup form harian
 					</button>
 				</div>
@@ -58,6 +58,10 @@
 		$('#dialog_footer').hide(500);		
 	});
 	$('#cancel_footer').click(function(){
+		$('#footer_notif_close').hide(500);		
+		$('#dialog_footer').show(500);		
+	});
+	$('#exit_footer').click(function(){
 		$('#footer_notif_close').hide(500);		
 		$('#dialog_footer').show(500);		
 	});
