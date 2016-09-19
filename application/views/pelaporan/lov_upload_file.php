@@ -82,11 +82,13 @@
 			dataType:'json',
 			data: formData,
 			success: function(response) {
-				$('#modal_upload_file').modal('toggle');
+				// $('#modal_upload_file').modal('toggle');
 				swal('Informasi',response.message,'info');
 				if (response.success == true){
 					$('#hasExcelUploaded').val(1);
 					$('#omzet_value').val(response.omzet_value);
+					$('#omzet_value_mask').val(  formatRupiahCurrency($('#omzet_value').val())  );
+					
 				// ________________________ Hitung Perihal Denda, Omzet, Total Bayar
 				$.ajax({
 					async: false,
@@ -99,6 +101,7 @@
 							if (data.rows.length > 0){
 								vat_pct = $('#rincian').find(':selected').data('id');
 								$('#val_pajak').val( parseFloat((vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
+								$('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
 								// }
 							} else
 							{
@@ -110,10 +113,11 @@
 									success: function (response) {
 										var data = $.parseJSON(response);
 										$('#val_pajak').val( parseFloat((data.rows[0].vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
+										$('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
 									}
 								});			
 							}
-							$('#modal_lov_form_harian').modal('hide');
+							
 					}
 				});
 				// Hitung Denda		
@@ -139,6 +143,8 @@
 									$('#val_denda').val(parseFloat(0));
 									$('#totalBayar').val( parseFloat(   $('#val_pajak').val()    ).toFixed(2) );
 							};
+							$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
+							$('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
 						}
 					});		
 				// ________________________				
@@ -148,7 +154,7 @@
 			contentType:false,
 			processData:false
 		});
-		
+		$('#modal_upload_file').modal('hide');
 		return false;
 	});
 </script>

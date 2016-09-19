@@ -70,6 +70,7 @@
 		var colSum = $grid.jqGrid('getCol', 'jum_penjualan', false, 'sum');
 		// $('#omzet_value').html(omzet_value);
 		$('#omzet_value').val(colSum);
+		$('#omzet_value_mask').val(  formatRupiahCurrency($('#omzet_value').val())  );
 
 		$.ajax({
             async: false,
@@ -82,6 +83,8 @@
 					if (data.rows.length > 0){
 						vat_pct = $('#rincian').find(':selected').data('id');
 						$('#val_pajak').val( parseFloat((vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
+						$('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
+						
 						// }
 					} else
 					{
@@ -93,6 +96,7 @@
 							success: function (response) {
 								var data = $.parseJSON(response);
 								$('#val_pajak').val( parseFloat((data.rows[0].vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
+								$('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
 							}
 						});
 					}
@@ -118,15 +122,18 @@
 								kelipatan_denda = 24;
 							};
 							$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val() * kelipatan_denda ).toFixed(2) );
-						// }
+							$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
 					}else
 					{
 							$('#val_denda').val((0));
+							$('#val_denda_mask').val((0));
 					};
 				}
 			});
 
 		$('#totalBayar').val(  parseFloat(   $('#val_pajak').val()  )  + parseFloat(  $('#val_denda').val()   ) );
+		$('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
+		
 		i=0; k=0; j=0;;
 		dataupdate = new Array(); datecreate=new Array();
 		while (i < $("#grid-table-laporan").getRowData().length){
@@ -319,14 +326,12 @@
 					i++;
 					}
 				}// else
-				// {
-
-				// }
 			}
 		});
 
 		$('#grid-table-laporan').trigger("GridUnload");
-		$('#grid-table-laporan').trigger( 'reloadGrid' );
+		$('#grid-table-laporan').jqGrid('clearGridData');
+		// $('#grid-table-laporan').trigger( 'reloadGrid' );
 		jQuery("#grid-table-laporan").jqGrid('setGridParam',
 				{
 					datatype: "local",

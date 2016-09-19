@@ -74,39 +74,74 @@
 			  </div>
 			  <div class="form-group">
 				<label class="col-md-2 control-label">Nilai Omzet:</label>
-				<div class="col-md-3 input-group">
-				<span class="input-group-addon">
-					<i><b>Rp</b></i>
-				</span>
-				  <input class="form-control" readonly="" id="omzet_value"  style="text-align:right;">
+				<div class="col-md-3 input-group" style="display: none;">
+					<span class="input-group-addon">
+						<i><b>Rp</b></i>
+					</span>
+						<input class="form-control" readonly="" id="omzet_value"  style="text-align:right;" >
 				</div>
+				
+				<div class="col-md-3 input-group">
+					<span class="input-group-addon">
+						<i><b>Rp</b></i>
+					</span>
+						<input class="form-control" readonly="" id="omzet_value_mask"  style="text-align:right;" >
+				</div>
+				
 			  </div>
 			  <div class="form-group">
 				<label class="col-md-2 control-label">Pajak yang Harus dibayar:</label>
-				<div class="col-md-3 input-group">
-				<span class="input-group-addon">
-					<i><b>Rp</b></i>
-				</span>
-				  <input class="form-control" readonly=""  id="val_pajak" style="text-align:right;">
+				
+				<div class="col-md-3 input-group" style="display: none;">
+					<span class="input-group-addon">
+						<i><b>Rp</b></i>
+					</span>
+					<input class="form-control" readonly=""  id="val_pajak" style="text-align:right;">
 				</div>
+				
+				<div class="col-md-3 input-group">
+					<span class="input-group-addon">
+						<i><b>Rp</b></i>
+					</span>
+					<input class="form-control" readonly=""  id="val_pajak_mask" style="text-align:right;">
+				</div>				
+				
 			  </div>
 			  <div class="form-group">
 				<label class="col-md-2 control-label">Denda:</label>
-				<div class="col-md-3 input-group">
-				<span class="input-group-addon">
-					<i><b>Rp</b></i>
-				</span>
-				  <input class="form-control" readonly=""  id="val_denda" style="text-align:right;">
+				
+				<div class="col-md-3 input-group" style="display: none;">
+					<span class="input-group-addon">
+						<i><b>Rp</b></i>
+					</span>
+					<input class="form-control" readonly=""  id="val_denda" style="text-align:right;">
 				</div>
+				
+				<div class="col-md-3 input-group">
+					<span class="input-group-addon">
+						<i><b>Rp</b></i>
+					</span>
+					<input class="form-control" readonly=""  id="val_denda_mask" style="text-align:right;">
+				</div>
+				
 			  </div>
 			  <div class="form-group">
 				<label class="col-md-2 control-label">Total Bayar:</label>
-				<div class="col-md-3 input-group">
-				<span class="input-group-addon">
-					<i><b>Rp</b></i>
-				</span>
-				  <input class="form-control" readonly=""  id="totalBayar" style="text-align:right;">
+				
+				<div class="col-md-3 input-group" style="display: none;">
+					<span class="input-group-addon">
+						<i><b>Rp</b></i>
+					</span>
+					<input class="form-control" readonly=""  id="totalBayar" style="text-align:right;">
 				</div>
+				
+				<div class="col-md-3 input-group">
+					<span class="input-group-addon">
+						<i><b>Rp</b></i>
+					</span>
+					<input class="form-control" readonly=""  id="totalBayar_mask" style="text-align:right;">
+				</div>
+				
 			  </div>
 			</form>
 			
@@ -125,6 +160,7 @@
 <?php  $this->load->view('pelaporan/lov_upload_file.php'); ?>
 
 <script>
+
 	$(document).ready(function(){
 		$.ajax({
 			url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/p_vat_type_dtl",
@@ -177,10 +213,6 @@
         });
 		
 	});	
-    
-
-    $('#months').click(function(){			
-	});
 	
 	$('#months').change(function(){
 		StartDate = $('#months').find(':selected').val();		
@@ -197,11 +229,14 @@
 		// $('#omzet_value').val();
 		nilai_pajak = $('#rincian').find(':selected').data('id');
 		$('#val_pajak').val(  $('#omzet_value').val() * nilai_pajak * 0.01);
+		$('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
 		if ($('#val_denda').val() != 0)
 		{
 			$('#val_denda').val(  parseFloat(0.02 * $('#val_pajak').val()).toFixed(2)  );
+			$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
 		}		
 		$('#totalBayar').val(   parseFloat( $('#val_pajak').val() )  +  parseFloat(  $('#val_denda').val() ) );
+		$('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
 
 	});
 	
@@ -254,9 +289,8 @@
         neg = true;
         total = Math.abs(total);
     }
-    return (neg ? "-$" : 'Rp. ') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+    return (neg ? "-$" : '') + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
 }
-	
 	
 	$('#submit-btn').on('click',function() {
 		
@@ -265,10 +299,10 @@
 						"Anda Melaporkan pajak daerah untuk : </h5>"+
 						"<pre style='text-align:left;'>" + 
 						"NPWPD 		 	: "+ $('#npwd').val() + "\n" +
-						"Klasifikasi 		: "+ $('#klasifikasi').find(':selected').val() + "\n" +
-						"Masa Pajak  		: "+ $('#months').find(':selected').val() + "\n" +
-						"Pajak Pokok 		: "+ formatRupiahCurrency($('#val_pajak').val()) + "\n" +
-						"Denda 		 	: "+ formatRupiahCurrency($('#val_denda').val()) + "\n" +
+						"Klasifikasi 		: Rp. "+ $('#klasifikasi').find(':selected').val() + "\n" +
+						"Masa Pajak  		: Rp. "+ $('#months').find(':selected').val() + "\n" +
+						"Pajak Pokok 		: Rp. "+ formatRupiahCurrency($('#val_pajak').val()) + "\n" +
+						"Denda 		 	: Rp."+ formatRupiahCurrency($('#val_denda').val()) + "\n" +
 						"Jumlah Pajak yang harus dibayar : <b>"+  formatRupiahCurrency($('#totalBayar').val()) +"</b>"+
 						"</pre>"+
 						"<h5>Apakah anda yakin akan mengirim laporan dimaksud?</h5>";
