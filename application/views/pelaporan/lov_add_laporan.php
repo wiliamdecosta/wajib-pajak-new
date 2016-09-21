@@ -220,9 +220,13 @@
 		$("#datepicker").datepicker('setDate',StartDate);
 		$("#datepicker2").datepicker('setDate',EndDate);
 		$('#omzet_value').val("");
+		$('#omzet_value_mask').val("");
 		$('#val_pajak').val("");
+		$('#val_pajak_mask').val("");
 		$('#val_denda').val("");
+		$('#val_denda_mask').val("");
 		$('#totalBayar').val("");		
+		$('#totalBayar_mask').val("");		
 	});
 	
 	$('#rincian').change(function(){
@@ -237,6 +241,45 @@
 		}		
 		$('#totalBayar').val(   parseFloat( $('#val_pajak').val() )  +  parseFloat(  $('#val_denda').val() ) );
 		$('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
+
+	});
+	
+	$('#rincian').change(function(){
+		
+		nilai_pajak = $('#rincian').find(':selected').data('id');
+		$('#val_pajak').val(  $('#omzet_value').val() * nilai_pajak * 0.01);
+		$('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
+		if($('#omzet_value').val() == 0)
+		{
+			$('#omzet_value').val( 0 );
+			$('#omzet_value_mask').val( 0 );
+		}
+		
+		if ($('#omzet_value').val() != 0)
+		{
+			$('#val_pajak').val(  $('#omzet_value').val() * nilai_pajak * 0.01);
+			$('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
+		} else {
+			$('#val_pajak').val(  0 );
+			$('#val_pajak_mask').val( 0 );
+		}
+		
+		if ($('#val_pajak').val() != 0)
+		{
+			$('#val_denda').val(  parseFloat(0.02 * $('#val_pajak').val()).toFixed(2)  );
+			$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
+		} else {
+			$('#val_denda').val(  0 );
+			$('#val_denda_mask').val( 0 );
+		}		
+		
+		if( $('#val_denda').val() != 0 ){
+			$('#totalBayar').val(   parseFloat( $('#val_pajak').val() )  +  parseFloat(  $('#val_denda').val() ) );
+			$('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
+		} else {
+			$('#totalBayar').val( 0 );
+			$('#totalBayar_mask').val( 0 );
+		}		
 
 	});
 	
