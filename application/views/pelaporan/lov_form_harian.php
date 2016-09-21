@@ -116,7 +116,7 @@
 				},
 				success: function (response) {
 					var data = $.parseJSON(response);
-					kelipatan_denda = data.rows[0].booldendamonth;
+					kelipatan_denda = data.rows[0].booldendamonth - 1;
 					if(parseInt(data.rows[0].booldenda) >= 0){
 							if(parseInt(kelipatan_denda > 24)){
 								kelipatan_denda = 24;
