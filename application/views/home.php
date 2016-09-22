@@ -41,22 +41,33 @@
 	<div class="slider-container rev_slider_wrapper" style="height: 400px;">
 		<div id="revolutionSlider" class="slider rev_slider" data-plugin-revolution-slider data-plugin-options='{"delay": 9000, "gridwidth": 800, "gridheight": 400}'>
 			<ul>
+                
 				<li data-transition="fade">
-					<img src="slider/slider1.jpg"
-						alt=""
-						data-bgposition="center center"
-						data-bgfit="cover"
-						data-bgrepeat="no-repeat"
-						class="rev-slidebg">
-				</li>
+                    <img src="slider/slider2.jpg"
+                        alt=""
+                        data-bgposition="center center"
+                        data-bgfit="cover"
+                        data-bgrepeat="no-repeat"
+                        class="rev-slidebg">
+                </li>
+				
+                <li data-transition="fade">
+                    <img src="slider/slide1.jpg"
+                        alt=""
+                        data-bgposition="center center"
+                        data-bgfit="cover"
+                        data-bgrepeat="no-repeat"
+                        class="rev-slidebg">
+                </li>
+				
 				<li data-transition="fade">
-					<img src="slider/slider2.jpg"
-						alt=""
-						data-bgposition="center center"
-						data-bgfit="cover"
-						data-bgrepeat="no-repeat"
-						class="rev-slidebg">
-				</li>
+                    <img src="slider/slide2.jpg"
+                        alt=""
+                        data-bgposition="center center"
+                        data-bgfit="cover"
+                        data-bgrepeat="no-repeat"
+                        class="rev-slidebg">
+                </li>
 
 				<li data-transition="fade">
 					<img src="slider/disyanjak_slider.jpg"
@@ -67,7 +78,7 @@
 						class="rev-slidebg">
 				</li>
 
-			</ul>
+            </ul>
 		</div>
 	</div>
 

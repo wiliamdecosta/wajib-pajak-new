@@ -230,17 +230,19 @@
 	});
 	
 	$('#rincian').change(function(){
-		// $('#omzet_value').val();
-		nilai_pajak = $('#rincian').find(':selected').data('id');
-		$('#val_pajak').val(  $('#omzet_value').val() * nilai_pajak * 0.01);
-		$('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
-		if ($('#val_denda').val() != 0)
-		{
-			$('#val_denda').val(  parseFloat(0.02 * $('#val_pajak').val()).toFixed(2)  );
-			$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
-		}		
-		$('#totalBayar').val(   parseFloat( $('#val_pajak').val() )  +  parseFloat(  $('#val_denda').val() ) );
-		$('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
+		// nilai_pajak = $('#rincian').find(':selected').data('id');
+		// $('#val_pajak').val(  $('#omzet_value').val() * nilai_pajak * 0.01);
+		// $('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
+
+		
+
+		// if ($('#val_denda').val() != 0)
+		// {
+			// $('#val_denda').val(  parseFloat(0.02 * $('#val_pajak').val()).toFixed(2)  );
+			// $('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
+		// }		
+		// $('#totalBayar').val(   parseFloat( $('#val_pajak').val() )  +  parseFloat(  $('#val_denda').val() ) );
+		// $('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
 
 	});
 	
@@ -264,22 +266,37 @@
 			$('#val_pajak_mask').val( 0 );
 		}
 		
-		if ($('#val_pajak').val() != 0)
-		{
-			$('#val_denda').val(  parseFloat(0.02 * $('#val_pajak').val()).toFixed(2)  );
-			$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
-		} else {
-			$('#val_denda').val(  0 );
-			$('#val_denda_mask').val( 0 );
-		}		
-		
-		if( $('#val_denda').val() != 0 ){
-			$('#totalBayar').val(   parseFloat( $('#val_pajak').val() )  +  parseFloat(  $('#val_denda').val() ) );
-			$('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
-		} else {
-			$('#totalBayar').val( 0 );
-			$('#totalBayar_mask').val( 0 );
-		}		
+		$.ajax({							
+			async: false,
+			url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/get_fined_start",
+			datatype: "json",            
+			type: "POST",
+			data: 
+			{
+					nowdate:moment($('#datepicker').val()).format("YYYY-MM-"),
+					getdate:moment($('#datepicker').val()).format("MM-YYYY")
+			},
+			success: function (response) 
+			{
+				var data = $.parseJSON(response);
+				kelipatan_denda = data.rows[0].booldendamonth - 1;
+				if(parseInt(data.rows[0].booldenda) >= 0)
+				{
+					if(parseInt(kelipatan_denda > 24)){
+						kelipatan_denda = 24;
+					}
+					$('#val_denda').val( parseFloat( 0.02 * $('#val_pajak').val() * kelipatan_denda ).toFixed(2) );
+					$('#totalBayar').val(  parseFloat(   $('#val_pajak').val()  )  + parseFloat(  $('#val_denda').val()   ) );
+				}
+				else
+				{
+						$('#val_denda').val(parseFloat(0));
+						$('#totalBayar').val( parseFloat(   $('#val_pajak').val()    ).toFixed(2) );
+				};
+				$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
+				$('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
+			}
+		});	
 
 	});
 	
@@ -342,11 +359,11 @@
 						"Anda Melaporkan pajak daerah untuk : </h5>"+
 						"<pre style='text-align:left;'>" + 
 						"NPWPD 		 	: "+ $('#npwd').val() + "\n" +
-						"Klasifikasi 		: Rp. "+ $('#klasifikasi').find(':selected').val() + "\n" +
-						"Masa Pajak  		: Rp. "+ $('#months').find(':selected').val() + "\n" +
+						"Klasifikasi 		: "+ $('#klasifikasi').find(':selected').val() + "\n" +
+						"Masa Pajak  		: "+ $('#months').find(':selected').val() + "\n" +
 						"Pajak Pokok 		: Rp. "+ formatRupiahCurrency($('#val_pajak').val()) + "\n" +
-						"Denda 		 	: Rp."+ formatRupiahCurrency($('#val_denda').val()) + "\n" +
-						"Jumlah Pajak yang harus dibayar : <b>"+  formatRupiahCurrency($('#totalBayar').val()) +"</b>"+
+						"Denda 		 	: Rp. "+ formatRupiahCurrency($('#val_denda').val()) + "\n" +
+						"Jumlah Pajak yang harus dibayar : <b> Rp. "+  formatRupiahCurrency($('#totalBayar').val()) +"</b>"+
 						"</pre>"+
 						"<h5>Apakah anda yakin akan mengirim laporan dimaksud?</h5>";
 		if(nilai_total.length == 0 || nilai_total == 0)

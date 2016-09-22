@@ -55,7 +55,7 @@
         </a>
     </li>
 
-	<li class="nav-item" data-source="">
+	<li class="nav-item" data-source="modem.tapping_modem">
 		<a href="#" class="nav-link nav-toggle">
 			<i class="fa fa-wifi"></i>
 			<span class="title">Tapping Modem</span>
