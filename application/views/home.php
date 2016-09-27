@@ -195,7 +195,7 @@
 													</div>
 											</div>
 											<span class="thumb-info-title">
-												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/reklame1.png'?>"></span>
+												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/reklame2.png'?>"></span>
 											</span>
 										</span>
 									</span>
@@ -282,7 +282,7 @@
 													</div>
 											</div>
 											<span class="thumb-info-title">
-												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/air1.png'?>"></span>
+												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/air2.png'?>"></span>
 											</span>
 										</span>
 									</span>
@@ -311,7 +311,7 @@
 													</div>
 											</div>
 											<span class="thumb-info-title">
-												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/BPHTB1.png'?>"></span>
+												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/BPHTB2.png'?>"></span>
 											</span>
 										</span>
 									</span>
@@ -338,7 +338,7 @@
 												</div>
 											</div>
 											<span class="thumb-info-title">
-												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/BUMI-BANGUNAN1.png'?>"></span>
+												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/BUMI-BANGUNAN2.png'?>"></span>
 											</span>
 										</span>
 									</span>

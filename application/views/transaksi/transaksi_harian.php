@@ -110,7 +110,7 @@
             },
             //memanggil controller jqgrid yang ada di controller crud
             editurl: '',
-            caption: "Customer Details"
+            caption: "Transaksi Harian"
 
         });
 
