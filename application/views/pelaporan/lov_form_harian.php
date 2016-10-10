@@ -117,22 +117,26 @@
 				success: function (response) {
 					var data = $.parseJSON(response);
 					kelipatan_denda = data.rows[0].booldendamonth - 1;
+					// alert(kelipatan_denda);
 					if(parseInt(data.rows[0].booldenda) >= 0){
 							if(parseInt(kelipatan_denda > 24)){
 								kelipatan_denda = 24;
-							};
+							};							
 							$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val() * kelipatan_denda ).toFixed(2) );
 							$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
+							$('#totalBayar').val(  parseFloat(   $('#val_pajak').val()  )  + parseFloat(  $('#val_denda').val()   ) );
+							// alert($('#val_denda').val());
 					}else
 					{
-							$('#val_denda').val((0));
-							$('#val_denda_mask').val((0));
-					};
+							$('#val_denda').val(parseFloat(0));
+							$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
+							$('#totalBayar').val( parseFloat(   $('#val_pajak').val()    ).toFixed(2) );
+					};				
+				$('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
 				}
 			});
 
-		$('#totalBayar').val(  parseFloat(   $('#val_pajak').val()  )  + parseFloat(  $('#val_denda').val()   ) );
-		$('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
+		
 		
 		i=0; k=0; j=0;;
 		dataupdate = new Array(); datecreate=new Array();

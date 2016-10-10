@@ -99,7 +99,7 @@ class T_vat_settlement_controller {
             };
 
             $sql = "select o_mess,o_pay_key,o_cust_order_id,o_vat_set_id from f_vat_settlement_manual_wp( ". $items['t_cust_accounts_id'] ." ,".$items['finance_period'].",'".$items['npwd']."','".$items['start_period']."','".$items['end_period']."',null,".$items['total_trans_amount'].",".$items['total_vat_amount'].",".$items['p_vat_type_dtl_id'].",".$items['p_vat_type_dtl_cls_id'].", '".$user_name."')";
-			
+			// print_r($sql);
             $messageq = $table->db->query($sql);
 			$message = $messageq->result_array();
 			// print_r($message);exit;
@@ -150,8 +150,8 @@ class T_vat_settlement_controller {
                 $sql = "select sikp.f_before_submit_sptpd_wp(".$items['t_vat_setllement_id'].",'".$user_name."')";
                 $messageq = $table->db->query($sql);
 				$message = $messageq->row_array();
-				// $message=$table->dbconn->GetOne($sql);
-                //if(trim($message)=='OK'){
+				
+				
 				if(true){
                     $sql="select o_result_msg from sikp.f_first_submit_engine(501,".$items['t_customer_order_id'].",'".$user_name."')";   
                     $messageq = $table->db->query($sql);

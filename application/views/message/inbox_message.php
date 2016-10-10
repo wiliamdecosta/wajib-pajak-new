@@ -15,28 +15,6 @@
 <div class="space-4"></div>
 
 <div class="row">
-	<div class="form-group">
-		<label class="control-label col-md-1">Search</label>
-		<div class="col-md-2">
-			<select id="tpref" class="form-control">
-				<option value="1">Customer Reference</option>
-				<option value="2">Account Number</option>
-				<option value="3">Account Name</option>
-				<option value="4">Telephone Number</option>
-			</select>									
-		</div>		
-		<div class="col-md-6" style="padding-left: 0px;">
-			<a id="SPTPD" class="btn blue"> Cetak SPTPD </a>
-			<a id="SSPD" class="btn blue"> Cetak SSPD </a>
-			<a id="RekapPenjualan" class="btn blue"> Rekap Penjualan </a>
-			<a id="CetakBayar" class="btn blue"><i class=""></i> Cetak Bayar </a>
-		</div>                             
-	</div>
-</div>
-
-<div class="space-4"></div>
-
-<div class="row">
 	<div class="tab-content col-md-12">
 		<div class="tab-pane active">
 			<table id="grid-table"></table>
@@ -88,7 +66,7 @@
             },
             //memanggil controller jqgrid yang ada di controller crud
             editurl: '',
-            caption: "Customer Details"
+            caption: "Inbox List"
 
         });
 		// jQuery("#grid-table").jqGrid('setGroupHeaders', {
