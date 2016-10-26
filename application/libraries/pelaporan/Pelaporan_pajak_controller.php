@@ -386,8 +386,77 @@ class Pelaporan_pajak_controller {
 			$table= $ci->transaksi_harian;
 		
 			// print_r($arr_npwd);exit;
-			$q 	= " SELECT *,to_char(start_date,'mm-dd-yyyy') as start_date_string,to_char(end_date,'mm-dd-yyyy') as end_date_string";
-			$q .= " FROM view_finance_period_bayar finance limit 36";
+			// $q 	= " SELECT *,to_char(start_date,'mm-dd-yyyy') as start_date_string,to_char(end_date,'mm-dd-yyyy') as end_date_string";
+			// $q .= " FROM view_finance_period_bayar finance limit 36";
+			$q = "SELECT *,to_char(start_date,'mm-dd-yyyy') as start_date_string,to_char(end_date,'mm-dd-yyyy') as end_date_string
+from view_finance_period_bayar
+ where p_finance_period_id - 1<= (
+ SELECT p_finance_period_id p_f_p_id
+from view_finance_period_bayar
+ where  to_char(start_date,'yyyy-mm-dd') in (
+ select start_period start_periods
+		from (select *
+                        	from 
+                        		(select c.npwd, 
+                        					 a.t_vat_setllement_id,	
+                        					 a.t_customer_order_id,
+											 a.is_surveyed,
+											 
+                        					    a.payment_key,
+                        						 c.company_name, 
+                        						 b.code as periode_pelaporan, 
+                        						 to_char(a.settlement_date,'DD-MON-YYYY') tgl_pelaporan, 
+                        						 a.total_trans_amount as total_transaksi,
+                        						 a.total_vat_amount as total_pajak ,
+                        					 nvl(a.total_penalty_amount,0) as total_denda,
+                        						 d.receipt_no as kuitansi_pembayaran,
+                        						 to_char(payment_date,'DD-MON-YYYY HH24:MI:SS') tgl_pembayaran ,
+                        						 d.payment_amount,
+                        						 c.t_cust_account_id ,
+                        						 b.p_finance_period_id ,
+                        						 to_char(a.start_period, 'yyyy-mm-dd') as start_period,
+                        						 to_char(a.end_period, 'yyyy-mm-dd') as end_period,
+                        						 to_char(a.start_period,'DD-MON-YYYY') as periode_awal_laporan,
+                        						 to_char(a.end_period,'DD-MON-YYYY') as periode_akhir_laporan,
+                        						 e.code as type_code,
+                        						 nvl(A.debt_vat_amt,a.total_vat_amount) as debt_vat_amt,
+                        						 nvl(a.db_increasing_charge,0) as db_increasing_charge,
+                        						 nvl(A.debt_vat_amt,a.total_vat_amount) + nvl(a.db_increasing_charge,0) +nvl(a.db_interest_charge,0) + nvl(a.total_penalty_amount,0) as total_hrs_bayar,
+                        						 nvl(a.db_increasing_charge,0) as kenaikan,
+                        						 nvl(a.db_interest_charge,0) as kenaikan1,
+                        						 a.p_vat_type_dtl_id,
+                        						 a.no_kohir,
+                        						 to_char(a.due_date,'DD-MON-YYYY') as jatuh_tempo,
+                        						 settlement_date,
+                        						 b.start_date												 
+                        			from t_vat_setllement a,
+                        					 p_finance_period b,
+                        					 t_cust_account c,
+                        					 t_payment_receipt d,
+                        					 p_settlement_type e,
+											 p_app_user f
+                        			where a.p_finance_period_id = b.p_finance_period_id
+                        						and a.t_cust_account_id = c.t_cust_account_id
+                        					   and a.t_cust_account_id =  4560
+                        						and a.t_vat_setllement_id = d.t_vat_setllement_id (+) 
+                        					and a.p_settlement_type_id = e.p_settlement_type_id
+											and a.created_by = f.app_user_name(+) ) as hasil
+                        	left join p_vat_type_dtl x on x.p_vat_type_dtl_id = hasil.p_vat_type_dtl_id) as data_transaksi
+                        
+                        left join t_cust_acc_masa_jab masa_jab 
+                        	on masa_jab.t_cust_account_id = data_transaksi.t_cust_account_id
+                        	and masa_awal <= settlement_date
+                        	and
+                        		case 
+                        			when masa_akhir is NULL
+                        				then true
+                        			when masa_akhir >= settlement_date
+                        				then masa_akhir >= settlement_date
+                        		end
+                        		
+ order by start_periods desc
+ limit 1))
+limit 36";
 			$q = $ci->db->query($q);
 			$result = $q->result_array();
 			

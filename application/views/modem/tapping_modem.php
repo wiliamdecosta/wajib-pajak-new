@@ -30,7 +30,7 @@ jQuery(function($) {
         var pager_selector = "#grid-pager-modem";
 
         jQuery("#grid-table-modem").jqGrid({
-            url: '<?php echo WS_JQGRID.'transaksi.transaksi_harian_controller/read'; ?>',
+            // url: '<?php echo WS_JQGRID.'transaksi.transaksi_harian_controller/read'; ?>',
             datatype: "json",
             mtype: "POST",
 			colModel: [

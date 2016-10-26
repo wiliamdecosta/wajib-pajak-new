@@ -59,13 +59,15 @@
                 {label: 'Tgl Lapor', name: 'tgl_pelaporan', align:'center', sortable:false, hidden: false, editable: true},
                 {label: 'Total Transaksi (Rp)', name: 'total_transaksi', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'Pajak Terutang (Rp)', name: 'total_pajak', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
-                {label: 'No Bayar', name: 'payment_key', hidden: false, sortable:false, editable: true, formatter:function(cellvalue,options,rowObject){
-					var is_employee = rowObject['is_employee'];
-					var is_surveyed = rowObject['is_surveyed'];
-					if(is_employee == 'Y') return cellvalue;
-					if(is_surveyed == 'Y') return cellvalue;
-					return '';
-				}},
+                {label: 'No Bayar', name: 'payment_key', hidden: false, sortable:false, editable: true, 
+				// formatter:function(cellvalue,options,rowObject){
+					// var is_employee = rowObject['is_employee'];
+					// var is_surveyed = rowObject['is_surveyed'];
+					// if(is_employee == 'Y') return cellvalue;
+					// if(is_surveyed == 'Y') return cellvalue;
+					// return '';
+				// }
+				},
                 {label: 'Sanksi Adm 25% (Rp)', name: 'kenaikan', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'Sanksi Adm 2% (Rp)', name: 'kenaikan1', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'Denda (Rp)', name: 'total_denda', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
