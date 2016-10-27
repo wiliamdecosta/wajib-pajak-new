@@ -436,8 +436,9 @@ from view_finance_period_bayar
                         					 p_settlement_type e,
 											 p_app_user f
                         			where a.p_finance_period_id = b.p_finance_period_id
+									and start_period is not null 
                         						and a.t_cust_account_id = c.t_cust_account_id
-                        					   and a.t_cust_account_id =  4560
+                        					   and a.t_cust_account_id =  ".$ci->session->userdata('cust_account_id')."
                         						and a.t_vat_setllement_id = d.t_vat_setllement_id (+) 
                         					and a.p_settlement_type_id = e.p_settlement_type_id
 											and a.created_by = f.app_user_name(+) ) as hasil
@@ -447,16 +448,16 @@ from view_finance_period_bayar
                         	on masa_jab.t_cust_account_id = data_transaksi.t_cust_account_id
                         	and masa_awal <= settlement_date
                         	and
-                        		case 
-                        			when masa_akhir is NULL
-                        				then true
-                        			when masa_akhir >= settlement_date
-                        				then masa_akhir >= settlement_date
-                        		end
-                        		
+                        	case 
+                        		when masa_akhir is NULL
+                        			then true
+                        		when masa_akhir >= settlement_date
+                        			then masa_akhir >= settlement_date
+                        	end                        		
  order by start_periods desc
  limit 1))
 limit 36";
+			// print_r($q);exit;
 			$q = $ci->db->query($q);
 			$result = $q->result_array();
 			

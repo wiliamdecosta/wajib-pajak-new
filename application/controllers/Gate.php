@@ -33,7 +33,7 @@ class Gate extends CI_Controller {
 										'link_login' => "#"),
 						'bphatb' => array('title' => 'Pajak Bea Perolehan Hak Atas Tanah dan Bangunan',
 										'link_pendaftaran' => "#",
-										'link_login' => "#"),
+										'link_login' => "http://ippat.disyanjak.net"),
 						'pbb' => array('title' => 'Pajak Bumi dan Bangunan',
 										'link_pendaftaran' => 'http://49.236.219.74/disyanjak-sipp/daftar',
 										'link_login' => 'http://49.236.219.74/disyanjak-sipp/ijinmasuk')
