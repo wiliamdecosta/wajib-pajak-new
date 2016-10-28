@@ -362,7 +362,7 @@
 						"<pre style='text-align:left;'>" + 
 						"NPWPD 		 	: "+ $('#npwd').val() + "\n" +
 						"Klasifikasi 		: "+ $('#klasifikasi').find(':selected').val() + "\n" +
-						"Masa Pajak  		: "+ $('#months').find(':selected').val() + "\n" +
+						"Masa Pajak  		: "+ $('#months').find(':selected').text() + "\n" +
 						"Pajak Pokok 		: Rp. "+ formatRupiahCurrency($('#val_pajak').val()) + "\n" +
 						"Denda 		 	: Rp. "+ formatRupiahCurrency($('#val_denda').val()) + "\n" +
 						"Jumlah Pajak yang harus dibayar : <b> Rp. "+  formatRupiahCurrency($('#totalBayar').val()) +"</b>"+

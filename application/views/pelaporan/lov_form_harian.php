@@ -416,10 +416,10 @@
 					$this.jqGrid('editCell', iRow, iCol, true);
 					$this.jqGrid('setGridParam', {cellEdit: false});
 				},
-				beforeEditCell:function(rowid){
+				// beforeEditCell:function(rowid){
 					// $('#simpan').unbind("click");
-					$('#simpan').attr('disabled', true);
-				},
+					// $('#simpan').attr('disabled', true);
+				// },
 				afterSubmitCell:function(){
 					$('#simpan').attr('disabled', false);
 				},
@@ -456,7 +456,7 @@
 							$this.jqGrid('setGridParam', {cellEdit: false});
 						});
 					}
-					// $('#simpan').attr('disabled', false);
+					$('#simpan').attr('disabled', false);
 				},
 				sortorder:'',
 				pager: '#grid-pager-laporan',

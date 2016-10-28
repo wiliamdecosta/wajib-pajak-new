@@ -565,6 +565,29 @@ limit 36";
 		exit;	
 	}	
 	
+	
+	public function getdata(){
+		$ci = & get_instance();
+		$ci->load->model('transaksi/transaksi_harian');
+		$table= $ci->transaksi_harian;
+
+        $nowdate = getVarClean('nowdate','str',"");
+		$url = "http://45.118.112.226/dashboard/page/print/print_data_daily_npwpd.php?tgl=".$nowdate."&npwpd=".$ci->session->userdata('npwd')."";
+		$getDataJSON = file_get_contents($url);
+		$dataArray = json_decode($getDataJSON,true);
+		
+		// print_r($url);
+		// exit;
+		$data = array('rows' => array(), 'page' => 1, 'records' => 0, 'total' => 1, 'success' => false, 'message' => '');
+		
+		$data['total'] = count($dataArray['items']);
+		$data['records'] = count($dataArray['items']);
+	
+		$data['rows'] = $dataArray['items'];
+		$data['success'] = true;
+		
+		return $data;
+	}
 	// public function banding_data(){
 		// $data = array('rows' => array(), 'success' => false, 'message' => '');
 		// try{
