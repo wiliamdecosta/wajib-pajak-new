@@ -168,7 +168,14 @@
             type: "POST",
             success: function (response) {
 					var data = $.parseJSON(response);
-					$('#klasifikasi').append('<option selected value='+ data.rows[0].vat_code +'>'+ data.rows[0].vat_code +'</option>');
+					vat_code_classification = data.rows[0].vat_code;
+					if(vat_code_classification == "RUMAH MAKAN")
+					{
+						$('#klasifikasi').append('<option selected value="RESTORAN">RESTORAN</option>');
+					} else
+					{
+						$('#klasifikasi').append('<option selected value='+ data.rows[0].vat_code +'>'+ data.rows[0].vat_code +'</option>');
+					}					
 					$('#vat_pct').append('<option value='+ data.rows[0].vat_code +' data-id='+ data.rows[0].vat_pct +' >'+ data.rows[0].vat_code +'</option>');
 				}
         });
