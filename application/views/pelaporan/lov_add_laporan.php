@@ -216,10 +216,12 @@
 				$('#months').append('<option value="'+ start_date +'" data-id="'+ end_date +'" data-idkey = "'+ p_id +'">' + months + '</option>');			
 				i++;
 				}
+				$("#datepicker").datepicker('setDate',data.rows[0].start_date_string);
+				$("#datepicker2").datepicker('setDate',data.rows[0].end_date_string	);
 			}
-        });
-		
-	});	
+        });	
+
+	});
 	
 	$('#months').change(function(){
 		StartDate = $('#months').find(':selected').val();		
