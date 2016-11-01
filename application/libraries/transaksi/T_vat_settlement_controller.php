@@ -568,23 +568,9 @@ class T_vat_settlement_controller {
                       "                         case when " . $p_vat_type_dtl_cls_id. " = 0 then null else " . $p_vat_type_dtl_cls_id. " end,".
 				"                         " . $bill_count. ",".
 				"                         '" . $bill_no_end. "')");
-				print_r("select o_result_code, o_result_msg from \n" .
-                      "f_ins_cust_acc_dtl_trans_v2(" . $items[$i]["t_cust_account_id"]. ",\n" .
-                      "                         '" . $tgl_trans . "',\n" .
-                      "                         '" . $bill_no. "',\n" .
-                      "                         '" . $serve_desc. "',\n" .
-                      "                         " . $serve_charge. ",\n" .
-                      "                         null,\n" .
-                      "                         '" . $description. "',\n" .
-                      "                         '" . $ci->session->userdata('user_name'). "',\n" .
-                      "                         '" . $p_vat_type_dtl_id. "',\n" .
-                      "                         case when " . $p_vat_type_dtl_cls_id. " = 0 then null else " . $p_vat_type_dtl_cls_id. " end,".
-				"                         " . $bill_count. ",".
-				"                         '" . $bill_no_end. "')");
 				$total_transaksi += $serve_charge;				
 				$table->db->trans_commit(); 
 			};
-			exit;
 			$data['omzet_value'] = $total_transaksi;
 			$data['success'] = true;
 			$data['message'] = 'Upload file transaksi berhasil dilakukan';
