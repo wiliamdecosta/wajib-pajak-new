@@ -169,13 +169,24 @@
             success: function (response) {
 					var data = $.parseJSON(response);
 					vat_code_classification = data.rows[0].vat_code;
+					vat_type_id = data.rows[0].p_vat_type_id;
+					
+					if(vat_type_id == 1)
+					{
+						$('#klasifikasi').append('<option selected value="KATERING">KATERING HOTEL</option>');
+					} else if(vat_type_id == 2 && vat_code_classification != "KATERING")
+					{
+						$('#klasifikasi').append('<option selected value="KATERING">KATERING</option>');
+					}
+					
 					if(vat_code_classification == "RUMAH MAKAN")
 					{
 						$('#klasifikasi').append('<option selected value="RESTORAN">RESTORAN</option>');
 					} else
 					{
 						$('#klasifikasi').append('<option selected value='+ data.rows[0].vat_code +'>'+ data.rows[0].vat_code +'</option>');
-					}					
+					}
+					
 					$('#vat_pct').append('<option value='+ data.rows[0].vat_code +' data-id='+ data.rows[0].vat_pct +' >'+ data.rows[0].vat_code +'</option>');
 				}
         });
@@ -216,8 +227,10 @@
 				$('#months').append('<option value="'+ start_date +'" data-id="'+ end_date +'" data-idkey = "'+ p_id +'">' + months + '</option>');			
 				i++;
 				}
+				if(data.rows[0].start_date_string != null && data.rows[0].end_date_string != null ){
 				$("#datepicker").datepicker('setDate',data.rows[0].start_date_string);
 				$("#datepicker2").datepicker('setDate',data.rows[0].end_date_string	);
+				};
 			}
         });	
 
@@ -238,22 +251,7 @@
 		$('#totalBayar_mask').val("");		
 	});
 	
-	$('#rincian').change(function(){
-		// nilai_pajak = $('#rincian').find(':selected').data('id');
-		// $('#val_pajak').val(  $('#omzet_value').val() * nilai_pajak * 0.01);
-		// $('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
-
-		
-
-		// if ($('#val_denda').val() != 0)
-		// {
-			// $('#val_denda').val(  parseFloat(0.02 * $('#val_pajak').val()).toFixed(2)  );
-			// $('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
-		// }		
-		// $('#totalBayar').val(   parseFloat( $('#val_pajak').val() )  +  parseFloat(  $('#val_denda').val() ) );
-		// $('#totalBayar_mask').val(formatRupiahCurrency( $('#totalBayar').val() ));
-
-	});
+	$('#')
 	
 	$('#rincian').change(function(){
 		
@@ -411,7 +409,8 @@
 									'end_period' : moment($('#datepicker2').val()).format('DD-MM-YYYY'),	
 									'total_trans_amount' :  $('#omzet_value').val(),	
 									'total_vat_amount' : $('#totalBayar').val()
-						});	
+						});
+						
 						$.ajax
 						({
 							url: "<?php echo WS_JQGRID ?>transaksi.t_vat_settlement_controller/createSPTPD",
@@ -427,7 +426,7 @@
 									p_vat_type_dtl_cls_id : '',
 									p_vat_type_dtl_id : <?php echo $this->session->userdata('vat_type_dtl'); ?>,
 									penalty_amount : $('#val_denda').find(':selected').val(),
-									percentage : 7,
+									percentage : ($('#val_pajak').val()/ $('#omzet_value').val() * 100),
 									start_period : 	moment($('#datepicker').val()).format('YYYY-MM-DD'),
 									t_cust_account_id : <?php echo $this->session->userdata('cust_account_id');?>,
 									total_amount :  $('#totalBayar').find(':selected').val(),

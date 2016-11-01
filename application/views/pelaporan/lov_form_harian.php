@@ -145,12 +145,24 @@
 			Tanggal = $('#grid-table-laporan').jqGrid('getCell',i+1,'Tanggal');
 			No_UrutAwal = $('#grid-table-laporan').jqGrid('getCell',i+1,'No_UrutAwal');
 			No_UrutAkhir = $('#grid-table-laporan').jqGrid('getCell',i+1,'No_UrutAkhir');
-			jum_faktur = parseInt($('#grid-table-laporan').jqGrid('getCell',i+1,'jum_faktur'));
-			jum_penjualan = parseInt($('#grid-table-laporan').jqGrid('getCell',i+1,'jum_penjualan'));
+			if ( parseInt($('#grid-table-laporan').jqGrid('getCell',i+1,'jum_faktur')) == 0)
+			{
+				jum_faktur = 0; 
+			} else
+			{
+				jum_faktur = parseInt($('#grid-table-laporan').jqGrid('getCell',i+1,'jum_faktur') || $('#grid-table-laporan').jqGrid('getCell',i+1,'jum_faktur') === null);
+			}
+
+			if ( parseInt($('#grid-table-laporan').jqGrid('getCell',i+1,'jum_penjualan')) == 0 || $('#grid-table-laporan').jqGrid('getCell',i+1,'jum_penjualan') === null){
+				jum_penjualan = 0; //alert(jum_penjualan);
+			} else{
+				jum_penjualan = parseInt($('#grid-table-laporan').jqGrid('getCell',i+1,'jum_penjualan'));
+			}
+			
 			t_cust_dtl = $('#grid-table-laporan').jqGrid('getCell',i+1,'t_cust_acc_dtl');
 			vat_pct = parseFloat($('#val_pajak').val()) / parseFloat($('#totalBayar').val());
 			description = $('#grid-table-laporan').jqGrid('getCell',i+1,'descript');
-			if(keyidchecker == -1){
+			if(keyidchecker == -1 || keyidchecker != -99){
 				datecreate.push ({
 					't_cust_acc_dtl_trans_id' : 0,
 					'p_vat_type_dtl_id' : '<?php echo $this->session->userdata('vat_type_dtl'); ?>',
@@ -192,7 +204,7 @@
 			}
 			i++;
 		};
-
+		alert(i+" - "+j+" - "+k);
 		if(j>0)
 			{
 				$.ajax
