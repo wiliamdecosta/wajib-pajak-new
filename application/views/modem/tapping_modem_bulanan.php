@@ -1,6 +1,10 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>/assets/global/plugins/moment.min.js"></script>
-
+<style>
+.ui-datepicker-calendar {
+    display: none;
+    }
+</style>
 <!-- breadcrumb -->
 <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -19,12 +23,13 @@
 <div>
 	
 	<div class="row">
-		<div class="col-md-4 form-inline">Harian	:
+		<div class="col-md-4 form-inline">
+			<label>Harian	:</label>
 			<input class="form-control date-picker" type="text" id="datepicker" readonly=""> 
 			<a class="btn btn-primary" id="generatetable">Generate</a>
 		</div>
 		<div class="col-md-4 col-md-offset-1 form-inline">
-			<label>Total <b>[Rp]</b>:</label>
+			<label>Total Bulanan <b>[Rp]</b>:</label>
 			<input class="form-control" type="text" id="totaldata" readonly=""> 
 		</div>
 	</div>
@@ -42,7 +47,12 @@
 $(document).ready(function(){
 	// $('#tablemodem').hide();
 });
-$( "#datepicker" ).datepicker();
+// $( "#datepicker" ).datepicker();
+$('#datepicker').datepicker( {
+        format: "mm/yyyy",
+		startView: "months", 
+		minViewMode: "months"
+    });
 function formatRupiahCurrency(total) {
     var neg = false;
     if(total < 0) {
@@ -53,14 +63,22 @@ function formatRupiahCurrency(total) {
 }
 $("#generatetable").on('click',function() 
 	{
+		date = $('#datepicker').val() ;
+		strsplit = date.split("/");
+		mm = strsplit[0] ;
+		yyyy = strsplit[1] ;
 
-		jQuery("#grid-table").jqGrid('setGridParam', {
-                        url: '<?php echo WS_JQGRID."pelaporan.pelaporan_pajak_controller/getdata"; ?>',
-                        datatype: 'json',
-                        postData: {nowdate:moment($('#datepicker').val()).format("DD/MM/YYYY")}
-                        // userData: {row: rowid}
-                    });
-					jQuery("#grid-table").trigger("reloadGrid");
+		jQuery("#grid-table").jqGrid('setGridParam', 
+		{
+			url: '<?php echo WS_JQGRID."pelaporan.pelaporan_pajak_controller/getdata_bulanan"; ?>',
+			datatype: 'json',
+			postData: 
+			{
+				tahun:yyyy,
+				bulan:mm
+			}
+		});
+		jQuery("#grid-table").trigger("reloadGrid");
 		
 	});
 	
@@ -69,14 +87,12 @@ $("#generatetable").on('click',function()
         var pager_selector = "#grid-pager";
 
         jQuery("#grid-table").jqGrid({
-
             mtype: "POST",
             colModel: [
 
                 {label: 'ID', name: 'no', key: true, hidden: true},
-                {label: 'Time', name: 'time', key: false, align:'center', hidden: false},
-                {label: 'Device ID', name: 'device_id', align:'center', key: false, hidden: false},
-                {label: 'Receipt No', name: 'receipt_no', align:'center', key: false, hidden: false},
+                {label: 'Time', name: 'tanggal', key: false, align:'center', hidden: false},
+                {label: 'Jumlah Receipt', name: 'jml_receipt', align:'right', key: false, hidden: false},
                 {label: 'Sub Total', name: 'sub_total', key: false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false},
                 {label: 'Charge', name: 'charge', key: false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false},
                 {label: 'Tax', name: 'tax', key: false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false},
@@ -88,8 +104,8 @@ $("#generatetable").on('click',function()
 			cmTemplate: { sortable: false },
             autowidth: false,
             viewrecords: true,
-            rowNum: 1000,
-            rowList: [1000],
+            rowNum: 50,
+            rowList: [50],
             rownumbers: true, // show row numbers
             // rownumWidth: 35, // the width of the row numbers columns
             altRows: true,
@@ -112,13 +128,14 @@ $("#generatetable").on('click',function()
                 }
 				responsive_jqgrid(grid_selector,pager_selector);
             },
-            gridComplete: function() {
+			gridComplete: function() {
 				var $grid = $('#grid-table');
 				var colSum = $grid.jqGrid('getCol', 'total', false, 'sum');
 				$('#totaldata').val(formatRupiahCurrency(colSum));
 			},
+            //memanggil controller jqgrid yang ada di controller crud
             editurl: '',
-            caption: "Tax Details"
+            caption: "Tapping Bulanan"
 
         });
         jQuery('#grid-table').jqGrid('navGrid', '#grid-pager',

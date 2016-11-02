@@ -104,20 +104,46 @@ class T_vat_settlement_controller {
 			$message = $messageq->result_array();
 			// print_r($message);
             $sql = "select * from f_get_penalty_amt(".$items['total_vat_amount'].",".$items['finance_period'].",".$items['p_vat_type_dtl_id'].");";
-			// print_r($sql);exit;
             $q = $ci->db->query($sql);
 			$penalty = $q->row_array();
-			// print_r($penalty);exit;
+
             if($message[0]['o_vat_set_id'] == null ||empty($message[0]['o_vat_set_id'])){
                 $data['success'] = false;
             }else{
-                $data['success'] = true;
+                // $data['success'] = true;
 				$params = json_encode(array(
 											't_vat_setllement_id'=>$message[0]['o_vat_set_id'],
 											't_customer_order_id'=>$message[0]['o_cust_order_id']
 											));
-				$_POST ['items']= $params;
-				$data = submitSptpd($items);
+
+				$data['success'] = false;
+				$user_name = $ci->session->userdata('user_name');
+            								
+                $sql = "select sikp.f_before_submit_sptpd_wp(".$message[0]['o_vat_set_id'].",'".$user_name."')";
+				// print_r($sql." - ");//exit;
+                $messageq = $table->db->query($sql);
+				$message1 = $messageq->row_array();
+				
+				
+				if(true){
+                    $sql="select o_result_msg from sikp.f_first_submit_engine(501,".$message[0]['o_cust_order_id'].",'".$user_name."')";   
+
+                    $messageq = $table->db->query($sql);
+					$message1 = $messageq->row_array();
+                    if($message1=='OK'){
+                        $sql="select f_gen_vat_dtl_trans(".$message[0]['o_vat_set_id'].",'".$user_name."')";   
+						$messageq = $table->db->query($sql);
+						$message1 = $messageq->result_array();
+                    }
+                    $data['success'] = true;
+                }
+
+				$data['items'] = $params;
+				$data['msg']= $message1;
+				$data['message'] = $message1;
+				echo json_encode($data);
+				exit;
+				
             }
             $data['items'] = $message[0];
             $data['message'] = $message[0]['o_mess'];
@@ -133,16 +159,15 @@ class T_vat_settlement_controller {
         }
     }
 	
-	public static function submitSptpd($args = array(), $items){
-        // $jsonItems = getVarClean('items', 'str', '');        
-        // $items = jsonDecode($jsonItems);
+	public static function submitSptpd($args = array()){
+		$jsonItems = getVarClean('items', 'str', '');
+		$items = jsonDecode($jsonItems);	
 		
 		$ci = & get_instance();
 		$ci->load->model('transaksi/t_vat_settlement');
 		$table= $ci->t_vat_settlement;
         $table->actionType = 'CREATE';
         
-        //$items = $item['items'];
         $data = array('items' => array(), 'total' => 0, 'success' => true, 'message' => '');
         try 
 		{
@@ -158,18 +183,16 @@ class T_vat_settlement_controller {
                     $sql="select o_result_msg from sikp.f_first_submit_engine(501,".$items['t_customer_order_id'].",'".$user_name."')";   
                     $messageq = $table->db->query($sql);
 					$message = $messageq->row_array();
-					// $message=$table->dbconn->GetOne($sql);
                     if($message=='OK'){
                         $sql="select f_gen_vat_dtl_trans(".$items['t_vat_setllement_id'].",'".$user_name."')";   
 						$messageq = $table->db->query($sql);
 						$message = $messageq->result_array();
-						// $message=$table->dbconn->GetItem($sql);
                     }
                     $data['success'] = true;
                 }
-            // }
+
             $data['items'] = $items;
-            $data['msg']=$message;
+            $data['msg']= $message;
             $data['message'] = $message;
             return $data;
         }catch(Exception $e) {
@@ -571,6 +594,7 @@ class T_vat_settlement_controller {
 				$total_transaksi += $serve_charge;				
 				$table->db->trans_commit(); 
 			};
+
 			$data['omzet_value'] = $total_transaksi;
 			$data['success'] = true;
 			$data['message'] = 'Upload file transaksi berhasil dilakukan';

@@ -58,6 +58,11 @@ class T_vat_settlement extends Abstract_model{
         
         if ($this->actionType == 'CREATE'){
             // TODO : Write your validation for CREATE here
+			// $this->record['creation_date'] = date('Y-m-d');
+            // $this->record['created_by'] = $userInfo['user_name'];
+			
+			 // $this->record['updated_date'] = date('Y-m-d');
+            // $this->record['updated_by'] = $userInfo['user_name'];
             
         }else if ($this->actionType == 'UPDATE'){
             // TODO : Write your validation for UPDATE here

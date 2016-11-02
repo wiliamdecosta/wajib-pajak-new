@@ -55,12 +55,34 @@
         </a>
     </li>
 
-	<li class="nav-item" data-source="modem.tapping_modem">
+	<!--<li class="nav-item" data-source="modem.tapping_modem">
 		<a href="#" class="nav-link nav-toggle">
 			<i class="fa fa-wifi"></i>
 			<span class="title">Tapping Modem</span>
 		</a>
+	</li> -->
+	
+	<li class="nav-item" data-source="">
+		<a href="#" class="nav-link nav-toggle">
+			<i class="fa fa-wifi"></i>
+			<span class="title"> Tapping Modem</span>
+			<span class="arrow open"></span>
+		</a>
+		<ul class="sub-menu" style="display: block;">
+			<li class="nav-item" data-source="modem.tapping_modem">
+				<a href="#" class="nav-link">
+					<span class="title">Harian</span>
+				</a>
+			</li>
+			<li class="nav-item" data-source="modem.tapping_modem_bulanan">
+				<a href="#" class="nav-link">
+					<span class="title">Bulanan</span>
+				</a>
+			</li>
+		</ul>
 	</li>
+	
+	
 
 <!--    <li class="nav-item" data-source="message.inbox_message">
         <a href="#" class="nav-link nav-toggle">

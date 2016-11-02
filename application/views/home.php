@@ -175,27 +175,28 @@
 						</div>
 					</div>
 
+					//
 					<div class="col-md-4 col-sm-6">
 						<div class="boxhead">
-							<a href="<?php echo base_url().'gate?type=reklame'?>">
+							<a href="<?php echo base_url().'gate?type=bphatb'?>">
 								<div class="image-gallery-item">
 									<span class="thumb-info thumb-info-centered-info thumb-info-no-borders mt-lg box-color">
 										<span class="thumb-info-wrapper" id="cbg">
 											<div class="boxhead">
 													<div class="box-content box-outside-pajak">
 														<div class="col-md-12">
-															<h2>Reklame</h2>
+															<h4>Bea Perolehan Hak Atas Tanah dan Bangunan</h4>
 															<div class="row">
 															<div class="space-4"></div>
 																<div class="col-xs-12 box-detail-pajak">
-																	<p>Peraturan Walikota Nomor 389 tahun 2012</p>
+																	<p>Peraturan Walikota Nomor 393 tahun 2012</p>
 																</div>
 															</div>
 														</div>
 													</div>
 											</div>
 											<span class="thumb-info-title">
-												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/reklame2.png'?>"></span>
+												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/BPHTB2.png'?>"></span>
 											</span>
 										</span>
 									</span>
@@ -203,6 +204,7 @@
 							</a>
 						</div>
 					</div>
+					//
 
 					<div class="col-md-4 col-sm-6">
 						<div class="boxhead">
@@ -290,28 +292,30 @@
 							</a>
 						</div>
 					</div>
-
+					
+					
+					//
 					<div class="col-md-4 col-sm-6">
 						<div class="boxhead">
-							<a href="<?php echo base_url().'gate?type=bphatb'?>">
+							<a href="<?php echo base_url().'gate?type=reklame'?>">
 								<div class="image-gallery-item">
 									<span class="thumb-info thumb-info-centered-info thumb-info-no-borders mt-lg box-color">
 										<span class="thumb-info-wrapper" id="cbg">
 											<div class="boxhead">
 													<div class="box-content box-outside-pajak">
 														<div class="col-md-12">
-															<h4>Bea Perolehan Hak Atas Tanah dan Bangunan</h4>
+															<h2>Reklame</h2>
 															<div class="row">
 															<div class="space-4"></div>
 																<div class="col-xs-12 box-detail-pajak">
-																	<p>Peraturan Walikota Nomor 393 tahun 2012</p>
+																	<p>Peraturan Walikota Nomor 389 tahun 2012</p>
 																</div>
 															</div>
 														</div>
 													</div>
 											</div>
 											<span class="thumb-info-title">
-												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/BPHTB2.png'?>"></span>
+												<span class="thumb-info-inner"><img alt="" class="img-responsive" src="<?php echo base_url().'theme/img/homepages/reklame2.png'?>"></span>
 											</span>
 										</span>
 									</span>
@@ -319,6 +323,7 @@
 							</a>
 						</div>
 					</div>
+					//
 
 					<div class="col-md-4 col-sm-6">
 						<div class="boxhead">

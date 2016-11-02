@@ -460,7 +460,7 @@ limit 36";
 			// print_r($q);exit;
 			$q = $ci->db->query($q);
 			$result = $q->result_array();
-			
+			// print_r($result);exit;
 			$data['rows'] = $result;
 			$data['success'] = true;
 			$data['message'] = 'data suceeded';
@@ -577,70 +577,7 @@ limit 36";
 		$dataArray = json_decode($getDataJSON,true);
 		
 		$data = array('rows' => array(), 'page' => 1, 'records' => 0, 'total' => 1, 'success' => false, 'message' => '');
-		// try {
-			
-		// $req_param = array(
-                // "sort_by" => $sidx,
-                // "sord" => $sord,
-                // "limit" => null,
-                // "field" => null,
-                // "where" => null,
-                // "where_in" => null,
-                // "where_not_in" => null,
-                // "search" => $_REQUEST['_search'],
-                // "search_field" => isset($_REQUEST['searchField']) ? $_REQUEST['searchField'] : null,
-                // "search_operator" => isset($_REQUEST['searchOper']) ? $_REQUEST['searchOper'] : null,
-                // "search_str" => isset($_REQUEST['searchString']) ? $_REQUEST['searchString'] : null
-            // );
 		
-		// $req_param['where'] = array();
-
-            // $table->setJQGridParam($req_param);
-            // $count = count($dataArray['items']);
-
-            // if ($count > 0) $total_pages = ceil($count / $limit);
-            // else $total_pages = 1;
-			
-            // if ($page > $total_pages) $page = $total_pages;
-            // $start = $limit * $page - ($limit); // do not put $limit*($page - 1)
-
-            // $req_param['limit'] = array(
-                // 'start' => $start,
-                // 'end' => $limit
-            // );
-
-            // $table->setJQGridParam($req_param);
-
-            // if ($page == 0) $data['page'] = 1;
-            // else $data['page'] = $page;
-
-            // $data['total'] = $total_pages;
-            // $data['records'] = $count;
-
-            // $data['rows'] = $dataArray['items'];
-            // $data['success'] = true;
-			
-		// }
-				// catch (Exception $e) 
-		// {
-            // $data['message'] = $e->getMessage();
-        // }
-		
-			// $table->setJQGridParam($req_param);
-            // $count = count($dataArray['items']);
-
-            // if ($count > 0) $total_pages = ceil($count / $limit);
-            // else $total_pages = 1;
-			
-            // if ($page > $total_pages) $page = $total_pages;
-            // $start = $limit * $page - ($limit); // do not put $limit*($page - 1)
-
-            // $req_param['limit'] = array(
-                // 'start' => $start,
-                // 'end' => $limit
-            // );
-
-            // $table->setJQGridParam($req_param);
 		$data['total'] = count($dataArray['items']);
 		$data['records'] = count($dataArray['items']);
 	
@@ -649,30 +586,29 @@ limit 36";
 		
 		return $data;
 	}
-	// public function banding_data(){
-		// $data = array('rows' => array(), 'success' => false, 'message' => '');
-		// try{
-			// $result = "";
-			// $ci = & get_instance();
-			// $ci->load->model('transaksi/transaksi_harian');
-			// $table= $ci->transaksi_harian;
+	public function getdata_bulanan(){
+		$ci = & get_instance();
+		$ci->load->model('transaksi/transaksi_harian');
+		$table= $ci->transaksi_harian;
+
+        $bulan = getVarClean('bulan','str',"");
+        $tahun = getVarClean('tahun','str',"");
+		// $url = "http://45.118.112.226/dashboard/page/print/print_data_daily_npwpd.php?tgl=".$nowdate."&npwpd=".$ci->session->userdata('npwd')."";
+		$url ="http://45.118.112.226/dashboard/page/print/print_data_monthly_npwpd.php?bulan=".$bulan."&tahun=".$tahun."&npwpd=".$ci->session->userdata('npwd')."";
+		// $url ="http://45.118.112.226/dashboard/page/print/print_data_monthly_npwpd.php?bulan=10&tahun=2016&npwpd=P200345750404";
+		$getDataJSON = file_get_contents($url);
+		$dataArray = json_decode($getDataJSON,true);
 		
-			// $q 	= " select due_in_day||'-'||to_char(start_date,'MM-YYYY') as denda_start from p_finance_period  ";
-			// $q .= " FROM p_finance_period ";
-			// $q = $ci->db->query($q);
-			// $result = $q->result_array();
-			
-			// $data['rows'] = $result;
-			// $data['success'] = true;
-			// $data['message'] = 'data suceeded';
-		// }
-		// catch (Exception $e) {
-			// $table->db->trans_rollback(); //Rollback Trans
-            // $data['message'] = $e->getMessage();
-            // $data['rows'] = array();
-		// }
-		// echo json_encode($data);
-		// exit;	
-	// }
+		$data = array('rows' => array(), 'page' => 1, 'records' => 0, 'total' => 1, 'success' => false, 'message' => '');
+		
+		$data['total'] = count($dataArray['items']);
+		$data['records'] = count($dataArray['items']);
+	
+		$data['rows'] = $dataArray['items'];
+		$data['success'] = true;
+		
+		return $data;
+	}
+
 	
 }

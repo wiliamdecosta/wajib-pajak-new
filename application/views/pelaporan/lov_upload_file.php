@@ -145,7 +145,7 @@
 									$('#val_denda').val(parseFloat(0));
 									$('#totalBayar').val( parseFloat(   $('#val_pajak').val()    ).toFixed(2) );
 							};
-							$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
+							$('#val_denda_mask').val(formatRupiahCurrency( parseFloat($('#val_denda').val() )) );
 							$('#totalBayar_mask').val(formatRupiahCurrency( parseFloat($('#totalBayar').val() )) );
 						}
 					});		

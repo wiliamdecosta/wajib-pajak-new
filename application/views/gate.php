@@ -74,7 +74,7 @@
 								<div class="featured-box featured-box-tertiary featured-box-effect-5" style="height: 203px;">
 									<div class="box-content">
 										<i class="icon-featured fa fa-laptop"></i>
-										<h1>Pendaftaran</h1>
+										<h1>Pendaftaran WP Baru</h1>
 										<p>Bila Anda belum mempunyai NPWPD, klik disini</p>
 									</div>
 								</div>
@@ -87,7 +87,7 @@
 								<div class="featured-box featured-box-tertiary featured-box-effect-5" style="height: 203px;">
 									<div  class="box-content">
 										<i class="icon-featured fa fa-user"></i>
-										<h1>Login</h1>
+										<h1>Pelaporan Pajak</h1>
 										<p>Segera lakukan pelaporan pajak Anda tepat waktu</p>
 									</div>
 								</div>
