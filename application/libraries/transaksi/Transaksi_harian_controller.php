@@ -45,7 +45,9 @@ class Transaksi_harian_controller {
 					WHEN  t_vat_setllement.start_period is null THEN p_finance_period.start_date
 					ELSE t_vat_setllement.start_period
 				END
-			AND 
+			AND
+			t_vat_setllement.payment_key is null 
+			AND
 			trans_date <= CASE
 					WHEN  t_vat_setllement.end_period is null THEN p_finance_period.end_date
 					ELSE t_vat_setllement.end_period

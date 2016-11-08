@@ -37,8 +37,10 @@ class Transaksi_harian extends Abstract_model {
 							sum(t_cust_acc_dtl_trans.service_charge) as jum_trans,
 							sum(t_cust_acc_dtl_trans.vat_charge) as jum_pajak,
 							t_cust_acc_dtl_trans.p_vat_type_dtl_id,
+							t_vat_setllement.payment_key as pay_key,
+							t_payment_receipt.receipt_no as kuitansi_pembayaran,
 							p_finance_period.p_finance_period_id,
-							p_finance_period.code,
+							p_finance_period.code,							
 							t_customer_order.p_order_status_id,
 							case when t_vat_setllement.start_period is null then to_char(p_finance_period.start_date,'yyyy-mm-dd') else to_char(t_vat_setllement.start_period,'yyyy-mm-dd') END as start_period,
                             case when t_vat_setllement.end_period is null then to_char(p_finance_period.end_date,'yyyy-mm-dd') else to_char(t_vat_setllement.end_period,'yyyy-mm-dd') END as end_period";
@@ -46,6 +48,7 @@ class Transaksi_harian extends Abstract_model {
 							LEFT JOIN p_finance_period on to_char(trans_date, 'YYYY-MM') = to_char(p_finance_period.start_date, 'YYYY-MM')
 							LEFT JOIN t_vat_setllement on t_cust_acc_dtl_trans.t_cust_account_id = t_vat_setllement.t_cust_account_id and  p_finance_period.p_finance_period_id = t_vat_setllement.p_finance_period_id 
 							LEFT JOIN t_customer_order on t_customer_order.t_customer_order_id = t_vat_setllement.t_customer_order_id
+							LEFT JOIN t_payment_receipt on t_payment_receipt.t_vat_setllement_id = t_vat_setllement.t_vat_setllement_id
 							";
 
 
@@ -156,6 +159,8 @@ class Transaksi_harian extends Abstract_model {
 							t_cust_acc_dtl_trans.p_vat_type_dtl_id,
 							p_finance_period.p_finance_period_id,
 							p_finance_period.code,
+							pay_key,
+							kuitansi_pembayaran,
 							t_customer_order.p_order_status_id,
 							case when t_vat_setllement.start_period is null then to_char(p_finance_period.start_date,'yyyy-mm-dd') else to_char(t_vat_setllement.start_period,'yyyy-mm-dd') END,
 							case when t_vat_setllement.end_period is null then to_char(p_finance_period.end_date,'yyyy-mm-dd') else to_char(t_vat_setllement.end_period,'yyyy-mm-dd') END");

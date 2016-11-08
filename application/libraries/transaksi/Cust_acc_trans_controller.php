@@ -178,18 +178,16 @@ class Cust_acc_trans_controller {
         return $data;
     }
 
-    function create() {
-		$user_name = getVarClean('user_name','str',32);
+    function create_data() {
+		$data = array( 'success' => false, 'message' => '', 'total' =>0);
         $ci = & get_instance();
-        $ci->load->model('transaksi/cust_acc_trans');
-        $table = $ci->cust_acc_trans;
-
-        $data = array('rows' => array(), 'page' => 1, 'records' => 0, 'total' => 1, 'success' => false, 'message' => '');
+        $ci->load->model('transaksi/t_vat_settlement');
+        $table = $ci->t_vat_settlement;
 
         $jsonItems = getVarClean('items', 'str', '');
         $items = jsonDecode($jsonItems);
 		
-		$t_cust_account_id 		= getVarClean('t_cust_account_id', 'int', 0);
+		$t_cust_account_id 		= $table->session->userdata('cust_account_id');
         $p_vat_type_dtl_id 		= getVarClean('p_vat_type_dtl_id', 'int', 0);
 		$p_vat_type_dtl_cls_id 	= getVarClean('p_vat_type_dtl_cls_id', 'int', 0);
 
@@ -197,29 +195,38 @@ class Cust_acc_trans_controller {
             $data['message'] = 'Invalid items parameter';
             return $data;
         }
-
-        $table->actionType = 'CREATE';
+		
         $errors = array();
-
+		try{
+			
+		$sql = "DELETE FROM t_cust_acc_dtl_trans a
+			WHERE a.t_cust_account_id = ". $t_cust_account_id ."
+			and not exists (select 1 
+				from t_vat_setllement_dtl x 
+					where x.t_cust_acc_dtl_trans_id = a.t_cust_acc_dtl_trans_id)";
+		$result = $table->db->query($sql);
         if (isset($items[0])){
             $numItems = count($items);
-            for($i=0; $i < $numItems; $i++){
-                try{
+			$total = 0;
+            for($i=0; $i < $numItems; $i++)
+				{
+				
+					$table->db->trans_begin();
+				
 					$dates_format = date('Y-m-d',strtotime($items[$i]["trans_date"]));
-					// print_r($dates_format);exit;
 					$date_t = $dates_format ."T00:00:00";
-                    $table->db->trans_begin(); //Begin Trans
-					$date_only = explode('T', $date_t); 
+					$date_only = explode('T', $date_t);
 
-					
-					$tgl_trans = empty($items[$i]["i_tgl_trans"]) ? $date_only[0] : $items[$i]["i_tgl_trans"];
+					$tgl_trans = empty($items[$i]["i_tgl_trans"]) ? $date_only [0] : $items[$i]["i_tgl_trans"];
+					$tgl_trans = date("Y-m-d", strtotime($tgl_trans));
 					$bill_no = empty($items[$i]["i_bill_no"]) ? $items[$i]["bill_no"] : $items[$i]["i_bill_no"];
 					$bill_no_end = empty($items[$i]["i_bill_no_end"]) ? $items[$i]["bill_no_end"] : $items[$i]["i_bill_no_end"];
 					$bill_count = empty($items[$i]["i_bill_count"]) ? $items[$i]["bill_count"] : $items[$i]["i_bill_count"];
 					$serve_desc = empty($items[$i]["i_serve_desc"]) ? $items[$i]["service_desc"] : $items[$i]["i_serve_desc"];
 					$serve_charge = empty($items[$i]["i_serve_charge"]) ? $items[$i]["service_charge"] : $items[$i]["i_serve_charge"];
 					$description = empty($items[$i]["i_description"]) ? $items[$i]["description"] : $items[$i]["i_description"];
-                       $ci->db->query("select o_result_code, o_result_msg from \n" .
+                       
+					$message = $ci->db->query("select o_result_code, o_result_msg from \n" .
                        "f_ins_cust_acc_dtl_trans_v2(" . $items[$i]["t_cust_account_id"]. ",\n" .
                        "                         '" . $tgl_trans . "',\n" .
                        "                         '" . $bill_no. "',\n" .
@@ -232,63 +239,45 @@ class Cust_acc_trans_controller {
                        "                         case when " . $p_vat_type_dtl_cls_id. " = 0 then null else " . $p_vat_type_dtl_cls_id. " end,".
 					"                         " . $bill_count. ",".
 					"                         '" . $bill_no_end. "')");
+					$mess = $message->row_array();
+					print_r($mess);
 					
-					// $tr_id = $ci->db->GetOne("select last_value from t_cust_acc_dtl_trans_seq");
-					// $query = "select to_char(trans_date,'yyyy-mm-dd') as trans_date,t_cust_acc_dtl_trans_id, t_cust_account_id, bill_no,bill_no_end,bill_count, service_desc, service_charge, vat_charge, description
-					// from sikp.f_get_cust_acc_dtl_trans_v2(".$items[$i]["t_cust_account_id"].",'".$tgl_trans."')AS tbl (t_cust_acc_dtl_trans_id) where t_cust_acc_dtl_trans_id = ?";
-                    $table->db->trans_commit(); //Commit Trans
-
-                }catch(Exception $e){
-
-                    $table->db->trans_rollback(); //Rollback Trans
-                    $errors[] = $e->getMessage();
+					$total++;
+                    $table->db->trans_commit();
                 }
             }
 
             $numErrors = count($errors);
             if ($numErrors > 0){
-                $data['message'] = $numErrors." from ".$numItems." record(s) failed to be saved.<br/><br/><b>System Response:</b><br/>- ".implode("<br/>- ", $errors)."";
-            }else{
+                $data['message'] = $numErrors." from ".$numItems." record(s) failed to be saved.<br/><br/><b>System Response:</b><br/>- ".implode("<br/>- ", $errors)."";				
+			}else{
                 $data['success'] = true;
-                $data['message'] = 'Data added successfully';
+                $data['message'] = 'Data added successfully submitted';
+                $data['total'] = $total;				
             }
-            $data['rows'] =$items;
-        }else {
-
-            try{
-                $table->db->trans_begin(); //Begin Trans
-
-                    $table->setRecord($items);
-                    $table->create();
-
-                $table->db->trans_commit(); //Commit Trans
-
-                $data['success'] = true;
-                $data['message'] = 'Data added successfully';
-
-            }catch (Exception $e) {
-                $table->db->trans_rollback(); //Rollback Trans
-
-                $data['message'] = $e->getMessage();
-                $data['rows'] = $items;
-            }
-
-        }
-        return $data;
+        }catch(Exception $e)
+		{
+			$data['success'] = false;
+			$data['message'] = $e->getMessage();			
+		}
+		echo json_encode($data);
+		exit;
 
     }
 
-    function update() {
+    function update_data() {
 
         $ci = & get_instance();
         $ci->load->model('transaksi/cust_acc_trans');		
         $table = $ci->cust_acc_trans;
 
-        $data = array('rows' => array(), 'page' => 1, 'records' => 0, 'total' => 1, 'success' => false, 'message' => '');
+        $data = array('success' => false, 'message' => '');
 
         $jsonItems = getVarClean('items', 'str', '');
         $items = jsonDecode($jsonItems);
 		$t_cust_account_id 	= getVarClean('t_cust_account_id', 'int', 0);
+		$p_vat_type_dtl_cls_id 	= getVarClean('p_vat_type_dtl_cls_id', 'int', 0);
+		$p_vat_type_dtl_id 		= getVarClean('p_vat_type_dtl_id', 'int', 0);
 		//var_dump($items);exit;
         if (!is_array($items)){
             $data['message'] = 'Invalid items parameter';

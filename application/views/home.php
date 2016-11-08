@@ -174,8 +174,7 @@
 							</a>
 						</div>
 					</div>
-
-					//
+					
 					<div class="col-md-4 col-sm-6">
 						<div class="boxhead">
 							<a href="<?php echo base_url().'gate?type=bphatb'?>">
@@ -204,7 +203,7 @@
 							</a>
 						</div>
 					</div>
-					//
+					
 
 					<div class="col-md-4 col-sm-6">
 						<div class="boxhead">
@@ -294,7 +293,7 @@
 					</div>
 					
 					
-					//
+					
 					<div class="col-md-4 col-sm-6">
 						<div class="boxhead">
 							<a href="<?php echo base_url().'gate?type=reklame'?>">
@@ -323,7 +322,7 @@
 							</a>
 						</div>
 					</div>
-					//
+					
 
 					<div class="col-md-4 col-sm-6">
 						<div class="boxhead">

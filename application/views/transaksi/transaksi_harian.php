@@ -47,7 +47,7 @@
                 {label: 'Masa Pajak', name: '', sortable:false, width:180, align:'center',hidden: false, formatter:function(cellvalue, options, rowObject){
 					return rowObject['start_period'] + ' s.d ' + rowObject['end_period'];
 				}},
-                {label: 'p_vat', name: 'p_vat_type_dtl_id', hidden: true},
+                {label: 'p_vat', name: 'p_vat_type_dtl_id', hidden: true, key:true},
                 {label: 'Status', name: 'p_order_status_id', sortable:false, hidden: false, width:200, editable: true, align:'center', formatter:function(cellvalue, options, rowObject){
 					if(cellvalue == "" || cellvalue == null){
 						return 'Laporan Belum Dikirim';
@@ -60,6 +60,7 @@
                 {label: 'Jumlah Transaksi (Rp)', name: 'jum_trans', sortable:false, width:200, hidden: false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right',editable: true},
                 {label: 'Jumlah Pajak (Rp)' , name: 'jum_pajak', sortable:false, width:150, hidden: false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', editable: true},
                 {label: 'Start Date', name: 'start_period', sortable:false, hidden: true, align:'center', editable: true},
+                // {label: 'Pay Me', name: 'pay_key', sortable:false, hidden: false, align:'center', editable: true},
                 {label: 'End Date', name: 'end_period', sortable:false, hidden: true, align:'center', editable: true}
 			],
             height: '100%',
@@ -102,11 +103,16 @@
                 id: 'id',
                 repeatitems: false
             },
-            loadComplete: function (response) {
+            loadComplete: function (response, rowid) {
                 if(response.success == false) {
                     swal({title: 'Attention', text: response.message, html: true, type: "warning"});
                 }
 				responsive_jqgrid(grid_selector,pager_selector);
+				// var grid_id = jQuery("#grid-table-trans");
+				// celValue = grid_id.jqGrid (rowid, selRowId, 'pay_key');
+				// if(celValue != "" || celValue != null){
+					// ("#"+rowid).hide();
+				// };
             },
             //memanggil controller jqgrid yang ada di controller crud
             editurl: '',

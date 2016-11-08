@@ -209,19 +209,19 @@
 			{
 				$.ajax
 				({
-						url: "<?php echo WS_JQGRID ?>transaksi.cust_acc_trans_controller/create",
+						url: "<?php echo WS_JQGRID ?>transaksi.cust_acc_trans_controller/create_data",
 						datatype: "json",
 						type: "POST",
 						data:
 							{
-								end_period 	 : 	moment($('#modal_lov_form_harian_id_val').val()).format('YYYY-MM-DD'),
+								start_period 	 : 	moment($('#modal_lov_form_harian_id_val').val()).format('YYYY-MM-DD'),
 								items : JSON.stringify(datecreate),
 								p_vat_type_dtl_id : '<?php echo $this->session->userdata('vat_type_dtl'); ?>',
-								start_period : 	moment($('#modal_lov_form_harian_code_val').val()).format('YYYY-MM-DD'),
-								t_cust_account_id : '<?php echo $this->session->userdata('cust_account_id'); ?>'
+								end_period : 	moment($('#modal_lov_form_harian_code_val').val()).format('YYYY-MM-DD'),
+								t_cust_account_id : '<?php echo $this->session->userdata('cust_account_id'); ?>',
+								p_vat_type_dtl_cls_id : $('#rincian').find(':selected').val()
 							},
 						success: function (response) {
-
 						}
 				});
 			}
@@ -229,16 +229,17 @@
 			{
 				$.ajax
 				({
-						url: "<?php echo WS_JQGRID ?>transaksi.cust_acc_trans_controller/update",
+						url: "<?php echo WS_JQGRID ?>transaksi.cust_acc_trans_controller/update_data",
 						datatype: "json",
 						type: "POST",
 						data:
 							{
-								end_period 	 : 	moment($('#modal_lov_form_harian_id_val').val()).format('YYYY-MM-DD') +'T00:00:00',
+								start_period 	 : 	moment($('#modal_lov_form_harian_id_val').val()).format('YYYY-MM-DD') +'T00:00:00',
 								items : JSON.stringify(dataupdate),
 								p_vat_type_dtl_id : '<?php echo $this->session->userdata('vat_type_dtl'); ?>',
-								start_period : 	moment($('#modal_lov_form_harian_code_val').val()).format('YYYY-MM-DD') +'T00:00:00',
-								t_cust_account_id : '<?php echo $this->session->userdata('cust_account_id'); ?>'
+								end_period : 	moment($('#modal_lov_form_harian_code_val').val()).format('YYYY-MM-DD') +'T00:00:00',
+								t_cust_account_id : '<?php echo $this->session->userdata('cust_account_id'); ?>',
+								p_vat_type_dtl_cls_id :$('#rincian').find(':selected').val() 
 							},
 						success: function (response) {
 

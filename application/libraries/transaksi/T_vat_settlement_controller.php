@@ -99,7 +99,6 @@ class T_vat_settlement_controller {
             };
 
             $sql = "select o_mess,o_pay_key,o_cust_order_id,o_vat_set_id from f_vat_settlement_manual_wp( ". $items['t_cust_accounts_id'] ." ,".$items['finance_period'].",'".$items['npwd']."','".$items['start_period']."','".$items['end_period']."',null,".$items['total_trans_amount'].",".$items['total_vat_amount'].",".$items['p_vat_type_dtl_id'].",".$items['p_vat_type_dtl_cls_id'].", '".$user_name."')";
-			// print_r($sql);
             $messageq = $table->db->query($sql);
 			$message = $messageq->result_array();
 			// print_r($message);
@@ -126,7 +125,7 @@ class T_vat_settlement_controller {
 				
 				
 				if(true){
-                    $sql="select o_result_msg from sikp.f_first_submit_engine(501,".$message[0]['o_cust_order_id'].",'".$user_name."')";   
+                    $sql="select o_result_msg AS o_mess from sikp.f_first_submit_engine(501,".$message[0]['o_cust_order_id'].",'".$user_name."')";   
 
                     $messageq = $table->db->query($sql);
 					$message1 = $messageq->row_array();
@@ -138,9 +137,9 @@ class T_vat_settlement_controller {
                     $data['success'] = true;
                 }
 
-				$data['items'] = $params;
-				$data['msg']= $message1;
-				$data['message'] = $message1;
+				$data['items'] = $message1;
+				$data['msg']= $message1['o_mess'];
+				$data['message'] = $message1['o_mess'];
 				echo json_encode($data);
 				exit;
 				
@@ -156,49 +155,6 @@ class T_vat_settlement_controller {
             $data['message'] = $e->getMessage();
             echo json_encode($data);
             exit;
-        }
-    }
-	
-	public static function submitSptpd($args = array()){
-		$jsonItems = getVarClean('items', 'str', '');
-		$items = jsonDecode($jsonItems);	
-		
-		$ci = & get_instance();
-		$ci->load->model('transaksi/t_vat_settlement');
-		$table= $ci->t_vat_settlement;
-        $table->actionType = 'CREATE';
-        
-        $data = array('items' => array(), 'total' => 0, 'success' => true, 'message' => '');
-        try 
-		{
-            $data['success'] = false;
-            $user_name = $ci->session->userdata('user_name');
-            								
-                $sql = "select sikp.f_before_submit_sptpd_wp(".$items['t_vat_setllement_id'].",'".$user_name."')";
-                $messageq = $table->db->query($sql);
-				$message = $messageq->row_array();
-				
-				
-				if(true){
-                    $sql="select o_result_msg from sikp.f_first_submit_engine(501,".$items['t_customer_order_id'].",'".$user_name."')";   
-                    $messageq = $table->db->query($sql);
-					$message = $messageq->row_array();
-                    if($message=='OK'){
-                        $sql="select f_gen_vat_dtl_trans(".$items['t_vat_setllement_id'].",'".$user_name."')";   
-						$messageq = $table->db->query($sql);
-						$message = $messageq->result_array();
-                    }
-                    $data['success'] = true;
-                }
-
-            $data['items'] = $items;
-            $data['msg']= $message;
-            $data['message'] = $message;
-            return $data;
-        }catch(Exception $e) {
-            $data['success'] = false;
-            $data['message'] = $e->getMessage();
-            return $data;   
         }
     }
 	
@@ -487,7 +443,7 @@ class T_vat_settlement_controller {
     }
 
 	public static function upload_excel($args = array()){
-		$data = array('success' => false, 'message' => '', 'omzet_value' => 0);
+		$data = array('success' => false, 'message' => '', 'omzet_value' => 0, 'Total_hari' =>0);
 		//memanggil perintah sql delete DSR
 		$ci = & get_instance();
 		$ci->load->model('transaksi/t_vat_settlement');
@@ -497,7 +453,7 @@ class T_vat_settlement_controller {
 		$start_period = getVarClean('start_period','str','');
 		$end_period = getVarClean('end_period','str','');
 		$p_vat_type_dtl_id = getVarClean('p_vat_type_dtl_id','int','');
-		$p_vat_type_dtl_cls_id = getVarClean('p_vat_type_dtl_id','int','');
+		$p_vat_type_dtl_cls_id = getVarClean('p_vat_type_dtl_cls_id','int',0);
 		
 		global $_FILES;
 		try {
@@ -561,13 +517,14 @@ class T_vat_settlement_controller {
 					$item['p_vat_type_dtl_cls_id'] = $p_vat_type_dtl_cls_id;                
 					$items[] = $item;
 					$loop_hari++;
+
 				}
 			}
-			
 			$numItems = count($items);
-			$total_transaksi = 0;
+			$total_transaksi = 0; $total_hari= 0;
 			for($i=0; $i < $numItems; $i++)
-			{
+			{	
+				$total_hari++;
 				$table->db->trans_begin();
 				
 				$tgl_trans 		= $items[$i]["i_tgl_trans"];
@@ -578,7 +535,7 @@ class T_vat_settlement_controller {
 				$serve_charge 	= $items[$i]["i_serve_charge"];
 				$description 	= $items[$i]["i_desc"];
 				
-				$ci->db->query("select o_result_code, o_result_msg from \n" .
+				$message = $ci->db->query("select o_result_code, o_result_msg from \n" .
                       "f_ins_cust_acc_dtl_trans_v2(" . $items[$i]["t_cust_account_id"]. ",\n" .
                       "                         '" . $tgl_trans . "',\n" .
                       "                         '" . $bill_no. "',\n" .
@@ -591,6 +548,9 @@ class T_vat_settlement_controller {
                       "                         case when " . $p_vat_type_dtl_cls_id. " = 0 then null else " . $p_vat_type_dtl_cls_id. " end,".
 				"                         " . $bill_count. ",".
 				"                         '" . $bill_no_end. "')");
+				$mess = $message->row_array();
+				print_r($mess);	
+				
 				$total_transaksi += $serve_charge;				
 				$table->db->trans_commit(); 
 			};
@@ -598,6 +558,7 @@ class T_vat_settlement_controller {
 			$data['omzet_value'] = $total_transaksi;
 			$data['success'] = true;
 			$data['message'] = 'Upload file transaksi berhasil dilakukan';
+			$data['Total_hari'] = $total_hari;
 		}catch(Exception $e) {
 			$data['success'] = false;
 			$data['message'] = $e->getMessage();
