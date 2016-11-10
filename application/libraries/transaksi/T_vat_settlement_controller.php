@@ -101,7 +101,7 @@ class T_vat_settlement_controller {
             $sql = "select o_mess,o_pay_key,o_cust_order_id,o_vat_set_id from f_vat_settlement_manual_wp( ". $items['t_cust_accounts_id'] ." ,".$items['finance_period'].",'".$items['npwd']."','".$items['start_period']."','".$items['end_period']."',null,".$items['total_trans_amount'].",".$items['total_vat_amount'].",".$items['p_vat_type_dtl_id'].",".$items['p_vat_type_dtl_cls_id'].", '".$user_name."')";
             $messageq = $table->db->query($sql);
 			$message = $messageq->result_array();
-			// print_r($message);
+			$messagefinal = $message;
             $sql = "select * from f_get_penalty_amt(".$items['total_vat_amount'].",".$items['finance_period'].",".$items['p_vat_type_dtl_id'].");";
             $q = $ci->db->query($sql);
 			$penalty = $q->row_array();
@@ -137,9 +137,9 @@ class T_vat_settlement_controller {
                     $data['success'] = true;
                 }
 
-				$data['items'] = $message['o_mess'];
-				$data['msg']= $message['o_mess'];
-				$data['message'] = $message['o_mess'];
+				$data['items'] = $messagefinal[0];
+				// $data['msg']= $messagefinal[0]['o_mess'];
+				$data['message'] = $messagefinal[0]['o_mess'];
 				echo json_encode($data);
 				exit;
 				
@@ -549,6 +549,7 @@ class T_vat_settlement_controller {
 				"                         " . $bill_count. ",".
 				"                         '" . $bill_no_end. "')");
 				$mess = $message->row_array();
+				// print_r($mess);	
 				
 				$total_transaksi += $serve_charge;				
 				$table->db->trans_commit(); 

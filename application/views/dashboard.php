@@ -20,6 +20,6 @@
 </div>	
 <div class="row">
 	<div class="col-md-12">
-		<img src="slider/disyanjak_slider.jpg" height="100%" width="100%">
+		<img src="slider/disyanjak_slider-2.jpg" height="100%" width="100%">
 	</div>
 </div>
