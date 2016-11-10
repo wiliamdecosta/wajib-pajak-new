@@ -20,6 +20,7 @@ class History_transaksi_controller {
             $ci = & get_instance();
             $ci->load->model('history/history_transaksi');
 			$t_cust_account_id = $ci->session->userdata('cust_account_id');
+			// print_r($t_cust_account_id);
 			$table = new History_transaksi($t_cust_account_id);
 
             $req_param = array(

@@ -36,8 +36,9 @@ class History_transaksi extends Abstract_model{
                         					 a.t_vat_setllement_id,	
                         					 a.t_customer_order_id,
 											 a.is_surveyed,
-											 
-                        					    a.payment_key,
+												f.is_employee,
+                        					    a.payment_key as payment_key1,
+                        					    a.payment_key as payment_key2,
                         						 c.company_name, 
                         						 b.code as periode_pelaporan, 
                         						 to_char(a.settlement_date,'DD-MON-YYYY') tgl_pelaporan, 
@@ -75,7 +76,8 @@ class History_transaksi extends Abstract_model{
                         					    %s
                         						and a.t_vat_setllement_id = d.t_vat_setllement_id (+) 
                         					and a.p_settlement_type_id = e.p_settlement_type_id
-											and a.created_by = f.app_user_name(+) ) as hasil
+											and a.created_by = f.app_user_name(+) 
+											) as hasil
                         	left join p_vat_type_dtl x on x.p_vat_type_dtl_id = hasil.p_vat_type_dtl_id) as data_transaksi
                         
                         left join t_cust_acc_masa_jab masa_jab 

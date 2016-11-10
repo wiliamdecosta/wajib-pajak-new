@@ -79,7 +79,7 @@ $db['default']['hostname'] ='45.118.112.231';
 
 $db['default']['username'] = 'sikp';
 $db['default']['password'] = 'sikp';
-$db['default']['database'] = 'sikp_backup_01_12_2016';
+// $db['default']['database'] = 'sikp_backup_01_12_2016';
 $db['default']['database'] = 'sikp_backup_10_24_2016';
 $db['default']['schema']   = 'sikp';
 $db['default']['port']     = 5444;

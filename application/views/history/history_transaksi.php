@@ -59,14 +59,16 @@
                 {label: 'Tgl Lapor', name: 'tgl_pelaporan', align:'center', sortable:false, hidden: false, editable: true},
                 {label: 'Total Transaksi (Rp)', name: 'total_transaksi', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'Pajak Terutang (Rp)', name: 'total_pajak', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
-                {label: 'No Bayar', name: 'payment_key', hidden: false, sortable:false, editable: true, 
-				// formatter:function(cellvalue,options,rowObject){
-					// var is_employee = rowObject['is_employee'];
-					// var is_surveyed = rowObject['is_surveyed'];
-					// if(is_employee == 'Y' && ) return cellvalue;
-					// if(is_surveyed == 'Y') return cellvalue;
-					// return '';
-				// }
+                {label: 'No Bayar 2', name: 'payment_key2', hidden: true, sortable:false, editable: true}, 
+                {label: 'No Bayar', name: 'payment_key1', hidden: false, sortable:false, editable: true, 
+				formatter:function(cellvalue,options,rowObject){
+					var is_employee = rowObject['is_employee'];
+					var is_surveyed = rowObject['is_surveyed'];
+					if(is_employee == 'Y') return cellvalue;
+					if(is_surveyed == 'Y' && cellvalue != "" && cellvalue != null) return cellvalue;
+					if(is_employee == 'N' && ( is_surveyed="") && cellvalue != "" && cellvalue != null) return '';
+					return '';
+				}
 				},
                 {label: 'Sanksi Adm 25% (Rp)', name: 'kenaikan', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'Sanksi Adm 2% (Rp)', name: 'kenaikan1', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
@@ -402,7 +404,7 @@
             return;
         }
         var rowData = $("#grid-table").getRowData(rowId);
-        var no_bayar = rowData['payment_key'];
+        var no_bayar = rowData['payment_key2'];
         var kuitansi = rowData['kuitansi_pembayaran'];
 		if(no_bayar ==""){
 			swal('Informasi','Laporan masih dalam tahap verifikasi. Mohon menunggu untuk info lebih lanjut','info');
