@@ -63,7 +63,7 @@
 				// formatter:function(cellvalue,options,rowObject){
 					// var is_employee = rowObject['is_employee'];
 					// var is_surveyed = rowObject['is_surveyed'];
-					// if(is_employee == 'Y') return cellvalue;
+					// if(is_employee == 'Y' && ) return cellvalue;
 					// if(is_surveyed == 'Y') return cellvalue;
 					// return '';
 				// }
@@ -74,8 +74,8 @@
                 {label: 'No. Kuitansi', name: 'kuitansi_pembayaran', sortable:false, width:450, hidden: false, editable: true},
                 {label: 'Jumlah Bayar (Rp)', name: 'total_hrs_bayar', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'Keterangan', name: 'lunas', align:'center', sortable:false, hidden: false, editable: true},
-				{label: 'is_employee', name: 'is_employee', hidden: true},
-				{label: 'is_surveyed', name: 'is_surveyed', hidden: true}
+				{label: 'is_employee', name: 'is_employee', hidden: false},
+				{label: 'is_surveyed', name: 'is_surveyed', hidden: false}
 			],
             height: '100%',
 			width:'100%',
@@ -404,6 +404,9 @@
         var rowData = $("#grid-table").getRowData(rowId);
         var no_bayar = rowData['payment_key'];
         var kuitansi = rowData['kuitansi_pembayaran'];
+		if(no_bayar ==""){
+			swal('Informasi','Laporan masih dalam tahap verifikasi. Mohon menunggu untuk info lebih lanjut','info');
+		} else
 		if(kuitansi == ""){
 			swal('Informasi','Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda','info');
 			var urlref = "http://45.118.112.231/mpd";
