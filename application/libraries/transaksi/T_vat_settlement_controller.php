@@ -137,9 +137,9 @@ class T_vat_settlement_controller {
                     $data['success'] = true;
                 }
 
-				$data['items'] = $message1;
-				$data['msg']= $message1['o_mess'];
-				$data['message'] = $message1['o_mess'];
+				$data['items'] = $message['o_mess'];
+				$data['msg']= $message['o_mess'];
+				$data['message'] = $message['o_mess'];
 				echo json_encode($data);
 				exit;
 				
@@ -549,7 +549,6 @@ class T_vat_settlement_controller {
 				"                         " . $bill_count. ",".
 				"                         '" . $bill_no_end. "')");
 				$mess = $message->row_array();
-				print_r($mess);	
 				
 				$total_transaksi += $serve_charge;				
 				$table->db->trans_commit(); 

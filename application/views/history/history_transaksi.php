@@ -22,7 +22,7 @@
 				<a id="btn-SPTPD" href="#" class="btn default"><i class="fa fa-print"></i> Cetak SPTPD </a>
 				<a id="btn-SSPD" href="#" class="btn default"><i class="fa fa-print"></i> Cetak SSPD </a>
 				<a id="btn-RekapPenjualan" href="#" class="btn default"><i class="fa fa-print"></i> Rekap Penjualan </a>
-				<a id="btn-CetakBayar" href="#" class="btn default"><i class="fa fa-print"></i> Cetak Bayar </a>
+				<a id="btn-CetakBayar" href="#" class="btn default"><i class="fa fa-print"></i> Cetak No Bayar </a>
 			</div>
 		</div>
 		<div class="portlet-body">
@@ -66,7 +66,7 @@
 					var is_surveyed = rowObject['is_surveyed'];
 					if(is_employee == 'Y') return cellvalue;
 					if(is_surveyed == 'Y' && cellvalue != "" && cellvalue != null) return cellvalue;
-					if(is_employee == 'N' && ( is_surveyed="") && cellvalue != "" && cellvalue != null) return '';
+					if(is_employee == 'N' && is_surveyed == null && cellvalue !=null) return 'Cetak No Bayar';
 					return '';
 				}
 				},
@@ -407,14 +407,14 @@
         var no_bayar = rowData['payment_key2'];
         var kuitansi = rowData['kuitansi_pembayaran'];
 		if(no_bayar ==""){
-			swal('Informasi','Laporan masih dalam tahap verifikasi. Mohon menunggu untuk info lebih lanjut','info');
+			swal('Informasi','Laporan masih dalam tahap verifikasi. Mohon cek history transaksi secara berkala','info');
 		} else
 		if(kuitansi == ""){
-			swal('Informasi','Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda','info');
-			var urlref = "http://45.118.112.231/mpd";
-			window.open(urlref);
+			// swal('Informasi','Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda','info');
+			var urlref = "http://45.118.112.232:81/mpd/report/cetak_no_bayar.php?no_bayar="+no_bayar;
+			window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");
 		} else if(no_bayar != "") {
-            var urlref = "http://45.118.112.231/mpd/report/cetak_no_bayar.php?no_bayar="+no_bayar;
+            var urlref = "http://45.118.112.232:81/mpd/report/cetak_no_bayar.php?no_bayar="+no_bayar;
             window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");
         }else {
             swal('Informasi','Laporan Anda masih dalam proses verifikasi.','info');
