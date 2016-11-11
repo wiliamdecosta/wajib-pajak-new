@@ -409,7 +409,7 @@
 		if(no_bayar ==""){
 			swal('Informasi','Laporan masih dalam tahap verifikasi. Mohon cek history transaksi secara berkala','info');
 		} else
-		if(kuitansi == ""){
+		if(kuitansi == "" && no_bayar=="" ){
 			// swal('Informasi','Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda','info');
 			// swal({title: "Pemberitahuan",
 				// text: "Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda",
@@ -445,7 +445,7 @@
 			})
 			
 		} else if(no_bayar != "") {
-            var urlref = "http://45.118.112.232/mpd/report/cetak_no_bayar.php?no_bayar="+no_bayar;
+            var urlref = "http://45.118.112.232:81/mpd/report/cetak_no_bayar.php?no_bayar="+no_bayar;
             window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");
         }else {
             swal('Informasi','Laporan Anda masih dalam proses verifikasi.','info');
