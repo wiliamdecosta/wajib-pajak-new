@@ -411,10 +411,41 @@
 		} else
 		if(kuitansi == ""){
 			// swal('Informasi','Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda','info');
-			var urlref = "http://45.118.112.232:81/mpd/report/cetak_no_bayar.php?no_bayar="+no_bayar;
-			window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");
+			// swal({title: "Pemberitahuan",
+				// text: "Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda",
+				// type: "info",
+				// showCancelButton: true,
+				// confirmButtonColor: "#bdeefb",
+				// confirmButtonText: "Isi Survey",
+				// cancelButtonText: "Tutup",
+				// closeOnConfirm: false
+				// },
+				// function(isConfirm){
+				// if (isConfirm) {
+					// swal("Deleted!", "Your imaginary file has been deleted.", "success");
+				// } else {
+						// swal("Cancelled", "Your imaginary file is safe :)", "error");
+				// }
+				// });
+
+
+			swal({
+			title: 'Pemberitahuan',
+			text: "Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda",
+			type: 'info',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Isi Survey',
+			cancelButtonText: 'Tutup'
+			}).then(function() {
+				// alert();
+				var urlref = "http://45.118.112.232/trans/t_survey_kepuasan_pelanggan_pelaporan_pertanyaan.php?payment_key="+no_bayar;
+						window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");
+			})
+			
 		} else if(no_bayar != "") {
-            var urlref = "http://45.118.112.232:81/mpd/report/cetak_no_bayar.php?no_bayar="+no_bayar;
+            var urlref = "http://45.118.112.232/mpd/report/cetak_no_bayar.php?no_bayar="+no_bayar;
             window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");
         }else {
             swal('Informasi','Laporan Anda masih dalam proses verifikasi.','info');
