@@ -76,8 +76,8 @@
                 {label: 'No. Kuitansi', name: 'kuitansi_pembayaran', sortable:false, width:450, hidden: false, editable: true},
                 {label: 'Jumlah Bayar (Rp)', name: 'total_hrs_bayar', sortable:false, formatter:'currency', formatoptions: {thousandsSeparator : '.', decimalPlaces: 0}, align:'right', hidden: false, editable: true},
                 {label: 'Keterangan', name: 'lunas', align:'center', sortable:false, hidden: false, editable: true},
-				{label: 'is_employee', name: 'is_employee', hidden: false},
-				{label: 'is_surveyed', name: 'is_surveyed', hidden: false}
+				{label: 'is_employee', name: 'is_employee', hidden: true},
+				{label: 'is_surveyed', name: 'is_surveyed', hidden: true}
 			],
             height: '100%',
 			width:'100%',
@@ -406,10 +406,11 @@
         var rowData = $("#grid-table").getRowData(rowId);
         var no_bayar = rowData['payment_key2'];
         var kuitansi = rowData['kuitansi_pembayaran'];
+        var is_surveyed = rowData['is_surveyed'];
 		if(no_bayar ==""){
 			swal('Informasi','Laporan masih dalam tahap verifikasi. Mohon cek history transaksi secara berkala','info');
 		} else
-		if(kuitansi == "" && no_bayar=="" ){
+	 if((is_surveyed == "" || is_surveyed =="N") && no_bayar!="" ){
 			// swal('Informasi','Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda','info');
 			// swal({title: "Pemberitahuan",
 				// text: "Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda",
