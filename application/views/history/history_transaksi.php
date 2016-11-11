@@ -440,7 +440,7 @@
 			cancelButtonText: 'Tutup'
 			}).then(function() {
 				// alert();
-				var urlref = "http://45.118.112.232/trans/t_survey_kepuasan_pelanggan_pelaporan_pertanyaan.php?payment_key="+no_bayar;
+				var urlref = "http://45.118.112.232:81/mpd/trans/t_survey_kepuasan_pelanggan_pelaporan_pertanyaan.php?payment_key="+no_bayar;
 						window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");
 			})
 			
