@@ -59,12 +59,12 @@
 		</div>
 		</div> -->
 		<div class="container">
-			<div class="row">
+			<!--<div class="row">
 				<div class="col-xs-12">
-					<h2 class="mb-none"><?php echo $title ?></h2>
+					<h2 class="mb-none"><?php //echo $title ?></h2>
 					<hr class="tall">
 				</div>
-			</div>
+			</div> -->
 
 			<div class="featured-boxes featured-boxes-flat">
 				<div class="row">
@@ -83,7 +83,7 @@
 					</div>
 					<div class="col-md-4 col-sm-6">
 						<div class="boxhead" id="loginbutton">
-							<a href="<?php echo $link_login ?>" >
+							<a href="<?php   echo $link_login ?>" >
 								<div class="featured-box featured-box-tertiary featured-box-effect-5" style="height: 203px;">
 									<div  class="box-content">
 										<i class="icon-featured fa fa-user"></i>
@@ -97,14 +97,14 @@
 
 				</div>
 			</div>
-			<div class="row">
+			<!--<div class="row">
 				<div class="col-md-2 col-md-offset-5">
-					<a href="<?php echo base_url();?>" class="btn btn-success btn-lg btn-block">
+					<a href="<?php //echo base_url();?>" class="btn btn-success btn-lg btn-block">
 						<i class="fa fa-arrow-left"></i>
 						Kembali
 					</a>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</section>
 <script>

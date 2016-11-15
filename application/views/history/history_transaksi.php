@@ -442,12 +442,13 @@
 			}).then(function() {
 				// alert();
 				var urlref = "http://45.118.112.232:81/mpd/trans/t_survey_kepuasan_pelanggan_pelaporan_pertanyaan.php?payment_key="+no_bayar;
-						window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");
+						window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");location.reload();
 			})
 			
 		} else if(no_bayar != "") {
             var urlref = "http://45.118.112.232:81/mpd/report/cetak_no_bayar.php?no_bayar="+no_bayar;
             window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");
+			reload();
         }else {
             swal('Informasi','Laporan Anda masih dalam proses verifikasi.','info');
         }
