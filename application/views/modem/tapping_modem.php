@@ -88,8 +88,8 @@ $("#generatetable").on('click',function()
 			cmTemplate: { sortable: false },
             autowidth: false,
             viewrecords: true,
-            rowNum: 1000,
-            rowList: [1000],
+            rowNum: 10000,
+            rowList: [10000],
             rownumbers: true, // show row numbers
             // rownumWidth: 35, // the width of the row numbers columns
             altRows: true,
