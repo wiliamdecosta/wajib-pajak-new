@@ -407,10 +407,11 @@
         var no_bayar = rowData['payment_key2'];
         var kuitansi = rowData['kuitansi_pembayaran'];
         var is_surveyed = rowData['is_surveyed'];
+        var is_employee = rowData['is_employee'];
 		if(no_bayar ==""){
 			swal('Informasi','Laporan masih dalam tahap verifikasi. Mohon cek history transaksi secara berkala','info');
 		} else
-	 if((is_surveyed == "" || is_surveyed =="N") && no_bayar!="" ){
+	 if((is_surveyed == "" || is_surveyed =="N") && no_bayar!="" && is_employee == 'N'){
 			// swal('Informasi','Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda','info');
 			// swal({title: "Pemberitahuan",
 				// text: "Isilah terlebih dahulu IKM  (Indeks Kepuasan Masyarakat) sebelum mencetak No Bayar Anda",
@@ -445,10 +446,9 @@
 						window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");location.reload();
 			})
 			
-		} else if(no_bayar != "") {
+		} else if(is_surveyed == "Y" || is_employee == "Y" ) {
             var urlref = "http://45.118.112.232:81/mpd/report/cetak_no_bayar.php?no_bayar="+no_bayar;
             window.open(urlref, "_blank", "toolbar=0,location=0,menubar=0");
-			reload();
         }else {
             swal('Informasi','Laporan Anda masih dalam proses verifikasi.','info');
         }
