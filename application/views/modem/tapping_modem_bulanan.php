@@ -24,7 +24,7 @@
 	
 	<div class="row">
 		<div class="col-md-4 form-inline">
-			<label>Harian	:</label>
+			<label>Bulanan	:</label>
 			<input class="form-control date-picker" type="text" id="datepicker" readonly=""> 
 			<a class="btn btn-primary" id="generatetable">Generate</a>
 		</div>

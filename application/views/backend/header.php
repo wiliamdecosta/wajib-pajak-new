@@ -50,6 +50,10 @@
                                     <a href="javascript:;">
                                         <i class="icon-user"></i> My Profile </a>
                                 </li>
+								<li id="manual">
+                                    <a href="poster/manual_pdf.pdf" download="poster/manual_pdf.pdf">
+                                        <i class="fa fa-file-pdf-o"></i> Download Manual </a>
+                                </li>
                                 <li class="divider"> </li>
                                 <li>
                                     <a href="<?php echo base_url().'auth/logout'; ?>">

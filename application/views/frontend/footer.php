@@ -7,26 +7,26 @@
                             <span>Dinas Pelayanan Pajak</span>
                         </div>
                         <div class="col-md-6">
-                            <h4>About Us</h4>
+                            <h4>Tentang Kami</h4>
                             <p>
                                 “Professional dan Prima dalam Pengelolaan Pajak Daerah Menuju Bandung Unggul, Nyaman dan Sejahtera”
                             </p>
                         </div>
                         <div class="col-md-4">
                             <div class="contact-details">
-                                <h4>Contact Us</h4>
+                                <h4>Kontak Kami</h4>
                                 <ul class="contact">
-                                    <li><p><i class="fa fa-map-marker"></i> <strong>Address:</strong> Jl.Wastukancana No.2-Bandung </p></li>
-                                    <li><p><i class="fa fa-phone"></i> <strong>Phone:</strong> (022) 423-5052</p></li>
+                                    <li><p><i class="fa fa-map-marker"></i> <strong>Alamat:</strong> Jl.Wastukancana No.2-Bandung </p></li>
+                                    <li><p><i class="fa fa-phone"></i> <strong>Telepon:</strong> (022) 423-5052</p></li>
                                     <li><p><i class="fa fa-envelope"></i> <strong>Email:</strong> <a href="mailto:support@disyanjak.bandung.go.id">support@disyanjak.bandung.go.id</a></p></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <h4>Follow Us</h4>
+                            <h4>Follow Kami</h4>
                             <ul class="social-icons">
-                                <li class="social-icons-facebook"><a href="#" target="_blank" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                                <li class="social-icons-twitter"><a href="#" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                <li class="social-icons-facebook"><a href="https://www.facebook.com/pages/Disyanjak-kota-bandung/1522255291359771" target="_blank" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li class="social-icons-twitter"><a href="https://twitter.com/disyanjakkotbdg" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a></li>
                             </ul>
                         </div>
                     </div>

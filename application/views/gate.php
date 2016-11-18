@@ -83,7 +83,7 @@
 					</div>
 					<div class="col-md-4 col-sm-6">
 						<div class="boxhead" id="loginbutton">
-							<a href="<?php   echo $link_login ?>" >
+							<a href="<?php   echo base_url().'auth';//$link_login ?>" >
 								<div class="featured-box featured-box-tertiary featured-box-effect-5" style="height: 203px;">
 									<div  class="box-content">
 										<i class="icon-featured fa fa-user"></i>
