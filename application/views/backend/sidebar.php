@@ -34,13 +34,6 @@
         </a>
     </li>
 
-    <li class="nav-item" data-source="transaksi.transaksi_harian">
-        <a href="#" class="nav-link nav-toggle">
-            <i class="fa fa-calendar-check-o"></i>
-            <span class="title">Transaksi Harian WP</span>
-        </a>
-    </li>
-
     <li class="nav-item" data-source="pelaporan.lov_add_laporan">
         <a href="#" class="nav-link nav-toggle">
             <i class="fa fa-newspaper-o"></i>
@@ -54,13 +47,13 @@
             <span class="title">History Transaksi</span>
         </a>
     </li>
-
-	<!--<li class="nav-item" data-source="modem.tapping_modem">
-		<a href="#" class="nav-link nav-toggle">
-			<i class="fa fa-wifi"></i>
-			<span class="title">Tapping Modem</span>
-		</a>
-	</li> -->
+	
+	<li class="nav-item" data-source="transaksi.transaksi_harian">
+        <a href="#" class="nav-link nav-toggle">
+            <i class="fa fa-calendar-check-o"></i>
+            <span class="title">Transaksi Harian WP</span>
+        </a>
+    </li>
 	
 	<li class="nav-item" data-source="">
 		<a href="#" class="nav-link nav-toggle">

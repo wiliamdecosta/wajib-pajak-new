@@ -3,11 +3,6 @@
     <div class="modal-dialog" style="width:960px;">
         <div class="modal-content">
             <!-- modal title -->
-            <div class="modal-header no-padding">
-                <div class="table-header">
-                    <span class="form-add-edit-title"> Isi Form Harian</span>
-                </div>
-            </div>
             <input type="hidden" id="modal_lov_form_harian_id_val" value="" />
             <input type="hidden" id="modal_lov_form_harian_code_val" value="" />
             <input type="hidden" id="modal_lov_vat_pct_val" value="" />
@@ -486,7 +481,7 @@
 				},
 				//memanggil controller jqgrid yang ada di controller crud
 				editurl: '',
-				caption: "Tax Details"
+				caption: "Pelaporan Harian"
 
 			});
 			jQuery('#grid-table-laporan').jqGrid('navGrid', '#grid-pager-laporan',

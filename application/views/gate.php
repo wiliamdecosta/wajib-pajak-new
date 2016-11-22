@@ -44,6 +44,14 @@
 						data-bgrepeat="no-repeat"
 						class="rev-slidebg">
 				</li>
+				<li data-transition="fade">
+					<img src="slider/eSatria.jpeg"
+						alt=""
+						data-bgposition="center center"
+						data-bgfit="cover"
+						data-bgrepeat="no-repeat"
+						class="rev-slidebg">
+				</li>
 
             </ul>
         </div>

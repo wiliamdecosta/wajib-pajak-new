@@ -396,6 +396,20 @@
 			}).then	
 			(function()
 				{
+					var dateTimeStart = new Date($("#datepicker").datepicker("getDate"));
+					var dateTimeEnd = new Date($("#datepicker2").datepicker("getDate"));
+					var strDateTimeStart =  dateTimeStart.getFullYear() + "-" + (dateTimeStart.getMonth()+1) + "-" + dateTimeStart.getDate();
+					var strDateTimeStart2 =  dateTimeStart.getDate() + "-" + (dateTimeStart.getMonth()+1) + "-" + dateTimeStart.getFullYear();
+					var strDateTimeEnd =  dateTimeEnd.getDate() + "-" + (dateTimeEnd.getMonth()+1) + "-" + dateTimeEnd.getFullYear();
+					 p_vat_type_dtl_ids = <?php echo $this->session->userdata('vat_type_dtl') ?>;
+					var day = $("#datepicker").datepicker('getDate').getDate();  
+					var month = $("#datepicker").datepicker('getDate').getMonth();  
+					var year = $("#datepicker").datepicker('getDate').getYear();  
+					// alert(day+"-"+month+"-"+year);
+					if( $('#klasifikasi').find(':selected').val() == "KATERING" )
+					{
+						p_vat_type_dtl_ids = 11;
+					};
 					items = new Array();
 						items.push 
 						({
@@ -405,8 +419,8 @@
 									'finance_period' : $('#months').find(':selected').data("idkey"),	
 									'p_vat_type_dtl_id' : <?php echo $this->session->userdata('vat_type_dtl'); ?>,	
 									'p_vat_type_dtl_cls_id' : '',	
-									'start_period' : moment($('#datepicker').val()).format('DD-MM-YYYY'),	
-									'end_period' : moment($('#datepicker2').val()).format('DD-MM-YYYY'),	
+									'start_period' : strDateTimeStart2,	
+									'end_period' : strDateTimeEnd,	
 									'total_trans_amount' :  $('#omzet_value').val(),	
 									'total_vat_amount' : $('#totalBayar').val()
 						});
@@ -418,16 +432,16 @@
 							type: "POST",
 							data: 
 								{
-									end_period : moment($('#datepicker2').val()).format('DD-MM-YYYY'),
+									end_period : strDateTimeEnd,
 									items: JSON.stringify(items),
 									t_cust_account_id : parseInt(<?php echo $this->session->userdata('cust_account_id'); ?>),
 									npwd : '<?php echo $this->session->userdata('npwd'); ?>',
 									p_finance_period : $('#months').find(':selected').val(),
 									p_vat_type_dtl_cls_id : '',
-									p_vat_type_dtl_id : <?php echo $this->session->userdata('vat_type_dtl'); ?>,
+									p_vat_type_dtl_id : p_vat_type_dtl_ids,
 									penalty_amount : $('#val_denda').find(':selected').val(),
 									percentage : ($('#val_pajak').val()/ $('#omzet_value').val() * 100),
-									start_period : 	moment($('#datepicker').val()).format('YYYY-MM-DD'),
+									start_period : 	strDateTimeStart,
 									t_cust_account_id : <?php echo $this->session->userdata('cust_account_id');?>,
 									total_amount :  $('#totalBayar').find(':selected').val(),
 									total_trans_amount : $('#omzet_value').val(),
