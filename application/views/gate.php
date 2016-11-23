@@ -18,6 +18,7 @@
                         class="rev-slidebg">
                 </li> -->
 				
+				
                 <li data-transition="fade">
                     <img src="slider/slide1.jpg"
                         alt=""
