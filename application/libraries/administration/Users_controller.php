@@ -4,7 +4,7 @@
 * @class Users_controller
 * @version 07/05/2015 12:18:00
 */
-class Users_controller {
+class Users_controller{
 
     function updateProfile() {
 
@@ -31,16 +31,34 @@ class Users_controller {
                 if($password != $password_confirmation) throw new Exception('Password tidak sesuai');
 
                 $record['user_pwd'] = md5($password);
+				
+				$sql = "UPDATE sikp.t_customer_user a 
+						set user_pwd ='".md5($password)."'
+						where t_customer_user_id = ".$user_id;		
+				
+				$query = $ci->db->query($sql);
             }
             $record['email_address'] = $user_email;
             $record['p_app_user_id'] = $user_id;
+			
+			$sql = "UPDATE sikp.t_customer 
+					set email_address ='".$user_email."'
+					where t_customer_id = (SELECT t_customer_id from t_customer_user where t_customer_user_id = ".$user_id.")";		
+			
+			$query = $ci->db->query($sql);
+			
+			$userdata = array(
+                        'user_email'        => $user_email
+                      );
+					  
+			$ci->session->set_userdata($userdata);
 
-            $table->actionType = 'UPDATE';
+            /*$table->actionType = 'UPDATE';
             $table->db->trans_begin(); //Begin Trans
                 $table->setRecord($record);
                 $table->update();
             $table->db->trans_commit(); //Commit Trans
-
+			*/
 
             $data['success'] = true;
             $data['message'] = 'Data profile berhasil diupdate';
