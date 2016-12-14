@@ -620,6 +620,310 @@ class Pelaporan_pajak_controller {
 		
 		return $data;
 	}
+	
+	public static function upload_excel($args = array()){
+		$data = array('success' => false, 'message' => '', 'omzet_value' => 0, 'Total_hari' =>0);
+		//memanggil perintah sql delete DSR
+		$ci = & get_instance();
+		$ci->load->model('transaksi/t_vat_settlement');
+		$table= $ci->t_vat_settlement;
+		
+		$t_cust_account_id = $table->session->userdata('cust_account_id');
+		$start_period = getVarClean('start_period','str','');
+		$end_period = getVarClean('end_period','str','');
+		$p_vat_type_dtl_id = getVarClean('p_vat_type_dtl_id','int','');
+		$p_vat_type_dtl_cls_id = getVarClean('p_vat_type_dtl_cls_id','int',0);
+		
+		global $_FILES;
+		try {
+			
+			$sql = "DELETE FROM t_cust_acc_dtl_trans a
+					WHERE a.t_cust_account_id = ". $t_cust_account_id ."
+					and not exists (select 1 
+						from t_vat_setllement_dtl x 
+							where x.t_cust_acc_dtl_trans_id = a.t_cust_acc_dtl_trans_id)";
+			$result = $table->db->query($sql);
+			
+			if(empty($_FILES['excel_trans_cust']['name'])){
+				throw new Exception('File tidak boleh kosong');
+			}
+			
+			$file_name = $_FILES['excel_trans_cust']['name']; // <-- File Name
+			$file_location = 'upload_excel/'.$file_name; // <-- LOKASI Upload File
+		
+			if (!move_uploaded_file($_FILES['excel_trans_cust']['tmp_name'], $file_location)){
+				throw new Exception("Upload file gagal");
+			}
+			
+			include('excel/reader.php');
+			$xl_reader = new Spreadsheet_Excel_Reader();
+			$res = $xl_reader->_ole->read($file_location);
+		
+			if($res === false) {
+				if($xl_reader->_ole->error == 1) {
+					echo "File Harus Format Excel";
+					exit;
+				}
+			}
 
+			$xl_reader->read($file_location);
+			$firstColumn = $xl_reader->sheets[0]['cells'][1][2];
+			
+			$jumlah_hari = (int)substr($end_period,8,2) - substr($start_period,8,2) + 1;
+			$tahun_bulan = substr($start_period,0,8);
+			// print_r($jumlah_hari);exit;
+
+			$items = array();	
+			$loop_hari = 1;
+			for($i = 3; $i <= $xl_reader->sheets[0]['numRows']; $i++) {
+				$temp_date = $tahun_bulan.sprintf("%02d", ($i-3+substr($start_period,8,2)));				
+			
+				if($loop_hari <= $jumlah_hari) {
+					if ($temp_date != $xl_reader->sheets[0]['cells'][$i][1]){					
+						throw new Exception("Laporan masa pajak anda ini tidak sesuai dengan Laporan Rekapitulasi Penerimaan Harian. Cek kembali pemilihan masa pajak".$loop_hari);
+					}
+					$item['t_cust_account_id'] = $t_cust_account_id; 
+					$item['i_tgl_trans'] =  $xl_reader->sheets[0]['cells'][$i][1]; 	
+					$bills = explode("-", $xl_reader->sheets[0]['cells'][$i][2]);
+					$item['i_bill_no'] =  $bills[0];
+					$item['i_bill_no_end'] =  $bills[1];
+					$item['i_bill_count'] =  $xl_reader->sheets[0]['cells'][$i][3];
+					$item['i_serve_desc'] =  '';
+					$item['i_serve_charge'] =  $xl_reader->sheets[0]['cells'][$i][4];
+					$i_vat_charge = $xl_reader->sheets[0]['cells'][$i][4];
+					$item['i_vat_charge'] = "null";
+					$item['i_desc'] = $xl_reader->sheets[0]['cells'][$i][5];   
+					$item['p_vat_type_dtl_id'] = $p_vat_type_dtl_id;                
+					$item['p_vat_type_dtl_cls_id'] = $p_vat_type_dtl_cls_id;                
+					$items[] = $item;
+					$loop_hari++;
+
+				}
+			}
+			$numItems = count($items);
+			$total_transaksi = 0; $total_hari= 0;
+			for($i=0; $i < $numItems; $i++)
+			{	
+				$total_hari++;
+				$table->db->trans_begin();
+				
+				$tgl_trans 		= $items[$i]["i_tgl_trans"];
+				$bill_no 		= $items[$i]["i_bill_no"];
+				$bill_no_end 	= $items[$i]["i_bill_no_end"];
+				$bill_count 	= $items[$i]["i_bill_count"];
+				$serve_desc 	= $items[$i]["i_serve_desc"];
+				$serve_charge 	= $items[$i]["i_serve_charge"];
+				$description 	= $items[$i]["i_desc"];
+				
+				$message = $ci->db->query("select o_result_code, o_result_msg from \n" .
+                      "f_ins_cust_acc_dtl_trans_v2(" . $items[$i]["t_cust_account_id"]. ",\n" .
+                      "                         '" . $tgl_trans . "',\n" .
+                      "                         '" . $bill_no. "',\n" .
+                      "                         '" . $serve_desc. "',\n" .
+                      "                         " . $serve_charge. ",\n" .
+                      "                         null,\n" .
+                      "                         '" . $description. "',\n" .
+                      "                         '" . $ci->session->userdata('user_name'). "',\n" .
+                      "                         '" . $p_vat_type_dtl_id. "',\n" .
+                      "                         case when " . $p_vat_type_dtl_cls_id. " = 0 then null else " . $p_vat_type_dtl_cls_id. " end,".
+				"                         " . $bill_count. ",".
+				"                         '" . $bill_no_end. "')");
+				$mess = $message->row_array();
+				// print_r($mess);	
+				
+				$total_transaksi += $serve_charge;				
+				$table->db->trans_commit(); 
+			};
+
+			$data['omzet_value'] = $total_transaksi;
+			$data['success'] = true;
+			$data['message'] = 'Upload file transaksi berhasil dilakukan';
+			$data['Total_hari'] = $total_hari;
+		}catch(Exception $e) {
+			$data['success'] = false;
+			$data['message'] = $e->getMessage();
+		}
+		
+		echo json_encode($data);
+		exit;
+    }
+
+	function update_data() {
+
+        $ci = & get_instance();
+        $ci->load->model('transaksi/cust_acc_trans');		
+        $table = $ci->cust_acc_trans;
+
+        $data = array('success' => false, 'message' => '');
+
+        $jsonItems = getVarClean('items', 'str', '');
+        $items = jsonDecode($jsonItems);
+		$t_cust_account_id 	= getVarClean('t_cust_account_id', 'int', 0);
+		$p_vat_type_dtl_cls_id 	= getVarClean('p_vat_type_dtl_cls_id', 'int', 0);
+		$p_vat_type_dtl_id 		= getVarClean('p_vat_type_dtl_id', 'int', 0);
+		//var_dump($items);exit;
+        if (!is_array($items)){
+            $data['message'] = 'Invalid items parameter';
+            return $data;
+        }
+
+        $table->actionType = 'UPDATE';
+
+        if (isset($items[0])){
+			$date_only = explode('T', $items[0]["trans_date"]);
+			$queryDate = date("Y-m-d", strtotime($date_only[0]));
+            $errors = array();
+			$numSaved = 0;
+            $numItems = count($items);
+			$savedItems = array();
+            for($i=0; $i < $numItems; $i++){
+                try{
+					// print_r($items[0]);
+                    $ci->db->trans_begin(); //Begin Trans
+						
+                        $table->setRecord($items[$i]);
+                        $table->update();
+						$numSaved++;
+                    $ci->db->trans_commit(); //Commit Trans
+					
+                    $items[$i] = $table->get($items[$i][$table->pkey]);
+					// print_r($items);exit;
+                }catch(Exception $e){
+                    $table->db->trans_rollback(); //Rollback Trans
+
+                    $errors[] = $e->getMessage();
+                }
+				// print_r($items);exit;
+				$query = "select to_char(trans_date,'yyyy-mm-dd') as trans_date,t_cust_acc_dtl_trans_id, t_cust_account_id, bill_no,bill_no_end,bill_count, service_desc, service_charge, vat_charge, description
+                      from sikp.f_get_cust_acc_dtl_trans_v2(".$t_cust_account_id.",'". $queryDate ."')AS tbl (t_cust_acc_dtl_trans_id) where t_cust_acc_dtl_trans_id = ". $items[$i]['t_cust_acc_dtl_trans_id'];
+					  // print_r(array($items[$i]['t_cust_acc_dtl_trans_id']));exit;
+				// print_r($query);exit;
+				$temp_row = $ci->db->query($query);
+				$items[$i] = $temp_row->row_array();
+            }
+
+            $numErrors = count($errors);
+            if ($numErrors > 0){
+                $data['message'] = $numErrors." from ".$numItems." record(s) failed to be saved.<br/><br/><b>System Response:</b><br/>- ".implode("<br/>- ", $errors)."";
+            }else{
+                $data['success'] = true;
+                $data['message'] = 'Data update successfully';
+            }
+            $data['rows'] =$items;
+        }else {
+
+            try{
+                $table->db->trans_begin(); //Begin Trans
+
+                    $table->setRecord($items);
+                    $table->update();
+
+                $table->db->trans_commit(); //Commit Trans
+
+                $data['success'] = true;
+                $data['message'] = 'Data update successfully';
+
+                $data['rows'] = $table->get($items[$table->pkey]);
+            }catch (Exception $e) {
+                $table->db->trans_rollback(); //Rollback Trans
+
+                $data['message'] = $e->getMessage();
+                $data['rows'] = $items;
+            }
+			$query = "select to_char(trans_date,'yyyy-mm-dd') as trans_date,t_cust_acc_dtl_trans_id, t_cust_account_id, bill_no,bill_no_end,bill_count, service_desc, service_charge, vat_charge, description
+                      from sikp.f_get_cust_acc_dtl_trans_v2(".$t_cust_account_id.",'".$date_only[0]."')AS tbl (t_cust_acc_dtl_trans_id) where t_cust_acc_dtl_trans_id = ?";
+    	   $temp_row = $table->db->query($query,array($items[$i]['t_cust_acc_dtl_trans_id']));
+		   $items[$i] = $temp_row->row_array();
+		   // $data['items'] = $table->dbquery->GetItem($query,array($items['t_cust_acc_dtl_trans_id']));
+        }
+        return $data;
+
+    }
+	
+	public static function createSptpd($args = array()){
+        $jsonItems = getVarClean('items', 'str', '');        
+        $item = jsonDecode($jsonItems);   
+		// print_r($item);exit;
+		$ci = & get_instance();
+		$ci->load->model('transaksi/t_vat_settlement');
+		$table= $ci->t_vat_settlement;
+		
+		$q 	= " select vat_type_dtl.* ";
+		$q .= " FROM sikp.p_vat_type_dtl vat_type_dtl";
+		$q .= " WHERE p_vat_type_dtl_id = ". $ci->session->userdata('vat_type_dtl');
+		$q = $ci->db->query($q);
+		$result = $q->result_array();
+		
+		
+		
+        $items = $item[0];
+        $data = array('items' => array(), 'total' => 0, 'success' => true, 'message' => '');
+        try {
+			// print_r($items);exit;			
+            $user_name = $ci->session->userdata('user_name');
+			// print_r($user_name);exit;
+            if(empty($items['p_vat_type_dtl_cls_id'])){
+                $items['p_vat_type_dtl_cls_id'] = 'null';
+            };
+
+            $sql = "select o_mess,o_pay_key,o_cust_order_id,o_vat_set_id from f_vat_settlement_manual_wp( ". $items['t_cust_accounts_id'] ." ,".$items['finance_period'].",'".$items['npwd']."','".$items['start_period']."','".$items['end_period']."',null,".$items['total_trans_amount'].",".$items['total_vat_amount'].",".$items['p_vat_type_dtl_id'].",".$items['p_vat_type_dtl_cls_id'].", '".$user_name."')";
+            $messageq = $table->db->query($sql);
+			$message = $messageq->result_array();
+			$messagefinal = $message;
+            $sql = "select * from f_get_penalty_amt(".$items['total_vat_amount'].",".$items['finance_period'].",".$items['p_vat_type_dtl_id'].");";
+            $q = $ci->db->query($sql);
+			$penalty = $q->row_array();
+
+            if($message[0]['o_vat_set_id'] == null ||empty($message[0]['o_vat_set_id'])){
+                $data['success'] = false;
+            }else{
+                // $data['success'] = true;
+				$params = json_encode(array(
+											't_vat_setllement_id'=>$message[0]['o_vat_set_id'],
+											't_customer_order_id'=>$message[0]['o_cust_order_id']
+											));
+
+				$data['success'] = false;
+				$user_name = $ci->session->userdata('user_name');
+            								
+                $sql = "select sikp.f_before_submit_sptpd_wp(".$message[0]['o_vat_set_id'].",'".$user_name."')";
+				// print_r($sql." - ");//exit;
+                $messageq = $table->db->query($sql);
+				$message1 = $messageq->row_array();
+				
+				
+				if(true){
+                    $sql="select o_result_msg AS o_mess from sikp.f_first_submit_engine(501,".$message[0]['o_cust_order_id'].",'".$user_name."')";   
+
+                    $messageq = $table->db->query($sql);
+					$message1 = $messageq->row_array();
+                    if($message1=='OK'){
+                        $sql="select f_gen_vat_dtl_trans(".$message[0]['o_vat_set_id'].",'".$user_name."')";   
+						$messageq = $table->db->query($sql);
+						$message1 = $messageq->result_array();
+                    }
+                    $data['success'] = true;
+                }
+
+				$data['items'] = $messagefinal[0];
+				// $data['msg']= $messagefinal[0]['o_mess'];
+				$data['message'] = $messagefinal[0]['o_mess'];
+				echo json_encode($data);
+				exit;
+				
+            }
+            $data['items'] = $message[0];
+            $data['message'] = $message[0]['o_mess'];
+            echo json_encode($data);
+            exit;
+        }
+		catch(Exception $e)
+		{
+            $data['success'] = false;
+            $data['message'] = $e->getMessage();
+            echo json_encode($data);
+            exit;
+        }
+    }
 	
 }

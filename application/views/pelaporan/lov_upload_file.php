@@ -56,7 +56,7 @@
 	};
 
     $('#form-upload-file').submit(function(e){
-		var url_submit = "<?php echo WS_JQGRID.'transaksi.t_vat_settlement_controller/upload_excel'; ?>"
+		var url_submit = "<?php echo WS_JQGRID.'pelaporan.pelaporan_pajak_controller/upload_excel'; ?>"
 		var formData = new FormData($(this)[0]);
 		
 		var date = $("#datepicker").datepicker('getDate');
@@ -82,6 +82,7 @@
 			dataType:'json',
 			data: formData,
 			success: function(response) {
+				console.log(response);
 				// $('#modal_upload_file').modal('toggle');
 				swal('Informasi',response.message,'info');
 				if (response.success == true){
@@ -114,44 +115,49 @@
 										var data = $.parseJSON(response);
 										$('#val_pajak').val( parseFloat((data.rows[0].vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
 										$('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
+									
+										// Hitung Denda		
+										var date_denda_signed = false;
+										$.ajax({							
+											async: false,
+											url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/get_fined_start",
+											datatype: "json",            
+											type: "POST",
+											data: {nowdate:moment($('#datepicker').val()).format("YYYY-DD-"),
+													getdate:moment($('#datepicker').val()).format("DD-YYYY")
+											},
+											success: function (response) {
+												var data = $.parseJSON(response);
+												kelipatan_denda = data.rows[0].booldendamonth - 1;
+												if(parseInt(data.rows[0].booldenda) >= 0)
+												{
+													if(parseInt(kelipatan_denda > 24)){
+														kelipatan_denda = 24;
+													}
+													$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val() * kelipatan_denda ).toFixed(2) );
+													$('#totalBayar').val(  parseFloat(   $('#val_pajak').val()  )  + parseFloat(  $('#val_denda').val()   ) );
+												}else
+												{
+														$('#val_denda').val(parseFloat(0));
+														$('#totalBayar').val( parseFloat(   $('#val_pajak').val()    ).toFixed(2) );
+												};
+												$('#val_denda_mask').val(formatRupiahCurrency( parseFloat($('#val_denda').val() )) );
+												$('#totalBayar_mask').val(formatRupiahCurrency( parseFloat($('#totalBayar').val() )) );
+											}
+										});										
 									}
 								});			
 							}
 							
 					}
 				});
-				// Hitung Denda		
-				var date_denda_signed = false;
-					$.ajax({							
-						async: false,
-						url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/get_fined_start",
-						datatype: "json",            
-						type: "POST",
-						data: {nowdate:moment($('#datepicker').val()).format("YYYY-MM-"),
-								getdate:moment($('#datepicker').val()).format("MM-YYYY")
-						},
-						success: function (response) {
-							var data = $.parseJSON(response);
-							kelipatan_denda = data.rows[0].booldendamonth - 1;
-							if(parseInt(data.rows[0].booldenda) >= 0)
-							{
-								if(parseInt(kelipatan_denda > 24)){
-									kelipatan_denda = 24;
-								}
-								$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val() * kelipatan_denda ).toFixed(2) );
-								$('#totalBayar').val(  parseFloat(   $('#val_pajak').val()  )  + parseFloat(  $('#val_denda').val()   ) );
-							}else
-							{
-									$('#val_denda').val(parseFloat(0));
-									$('#totalBayar').val( parseFloat(   $('#val_pajak').val()    ).toFixed(2) );
-							};
-							$('#val_denda_mask').val(formatRupiahCurrency( parseFloat($('#val_denda').val() )) );
-							$('#totalBayar_mask').val(formatRupiahCurrency( parseFloat($('#totalBayar').val() )) );
-						}
-					});		
+					
 				// ________________________				
 				}
 			},
+			error: function(response) { 
+						return false;
+			alert("AJAX Gagal")},
 			cache:false,
 			contentType:false,
 			processData:false

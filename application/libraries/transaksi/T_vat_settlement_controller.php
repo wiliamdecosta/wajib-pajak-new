@@ -87,7 +87,15 @@ class T_vat_settlement_controller {
 		$ci = & get_instance();
 		$ci->load->model('transaksi/t_vat_settlement');
 		$table= $ci->t_vat_settlement;
-               
+		
+		$q 	= " select vat_type_dtl.* ";
+		$q .= " FROM sikp.p_vat_type_dtl vat_type_dtl";
+		$q .= " WHERE p_vat_type_dtl_id = ". $ci->session->userdata('vat_type_dtl');
+		$q = $ci->db->query($q);
+		$result = $q->result_array();
+		
+		
+		
         $items = $item[0];
         $data = array('items' => array(), 'total' => 0, 'success' => true, 'message' => '');
         try {
@@ -441,6 +449,22 @@ class T_vat_settlement_controller {
         }
         return $data;
     }
+	
+	public static function transaksi_checker($args = array()){
+		$data = array('success' => false, 'equal' => false);
+		$ci = & get_instance();
+		$ci->load->model('transaksi/t_vat_settlement');
+		$table= $ci->t_vat_settlement;
+		
+		$jsonItems = getVarClean('items', 'str', '');        
+        $item = jsonDecode($jsonItems);
+		
+		$q 	= " select vat_type_dtl.* ";
+		$q .= " FROM sikp.p_vat_type_dtl vat_type_dtl";
+		$q .= " WHERE p_vat_type_dtl_id = ". $ci->session->userdata('vat_type_dtl');
+		$q = $ci->db->query($q);
+		$result = $q->result_array();
+	};
 
 	public static function upload_excel($args = array()){
 		$data = array('success' => false, 'message' => '', 'omzet_value' => 0, 'Total_hari' =>0);

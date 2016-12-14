@@ -91,48 +91,60 @@
 							success: function (response) {
 								var data = $.parseJSON(response);
 								$('#val_pajak').val( parseFloat((data.rows[0].vat_pct * parseInt($('#omzet_value').val())) / 100).toFixed(2) );
+								
 								$('#val_pajak_mask').val(formatRupiahCurrency( $('#val_pajak').val() ));
+								
+								var date_denda_signed = false;
+									$.ajax
+									({
+										async: false,
+										url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/get_fined_start",
+										datatype: "json",
+										type: "POST",
+										data: {nowdate:moment($('#datepicker').val()).format("YYYY-DD-"),
+												getdate:moment($('#datepicker').val()).format("DD-YYYY")
+										},
+										success: function (response) {
+											var data = $.parseJSON(response);
+											kelipatan_denda = data.rows[0].booldendamonth - 1;
+											if(parseInt(data.rows[0].booldenda) >= 0){
+													if(parseInt(kelipatan_denda > 24)){
+														kelipatan_denda = 24;
+													};							
+													$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val() * kelipatan_denda ).toFixed(2) );
+													$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
+													
+													$('#totalBayar').val(  parseFloat(   $('#val_pajak').val()  )  + parseFloat(  $('#val_denda').val()   ) );
+											}else
+											{
+													$('#val_denda').val(parseFloat(0));
+													$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
+													// if isNaN($('#val_denda').val()){
+														// alert($('#val_denda').val());
+													// }
+													$('#totalBayar').val( parseFloat(   $('#val_pajak').val()    ).toFixed(2) );
+											};
+													$('#val_denda_mask').val(formatRupiahCurrency( parseFloat($('#val_denda').val() )) );
+													// if isNaN($('#val_denda_mask').val()){
+														// alert($('#val_denda_mask').val());
+													// }
+													$('#totalBayar_mask').val(formatRupiahCurrency( parseFloat($('#totalBayar').val() )) );					
+									// --- //	
+							
+									// --- //
+									}
+								});
+								
 							}
 						});
 					}
 					$('#modal_lov_form_harian').modal('hide');
+			//  denda  //
+			// Hitung Denda
+			
+			
 			}
 		});
-		// Hitung Denda
-		var date_denda_signed = false;
-			$.ajax
-			({
-				async: false,
-				url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/get_fined_start",
-				datatype: "json",
-				type: "POST",
-				data: {nowdate:moment($('#datepicker').val()).format("YYYY-MM-"),
-						getdate:moment($('#datepicker').val()).format("MM-YYYY")
-				},
-				success: function (response) {
-					var data = $.parseJSON(response);
-					kelipatan_denda = data.rows[0].booldendamonth - 1;
-					// alert(kelipatan_denda);
-					if(parseInt(data.rows[0].booldenda) >= 0){
-							if(parseInt(kelipatan_denda > 24)){
-								kelipatan_denda = 24;
-							};							
-							$('#val_denda').val( parseFloat(0.02 * $('#val_pajak').val() * kelipatan_denda ).toFixed(2) );
-							$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
-							$('#totalBayar').val(  parseFloat(   $('#val_pajak').val()  )  + parseFloat(  $('#val_denda').val()   ) );
-							// alert($('#val_denda').val());
-					}else
-					{
-							$('#val_denda').val(parseFloat(0));
-							$('#val_denda_mask').val(formatRupiahCurrency( $('#val_denda').val() ));
-							$('#totalBayar').val( parseFloat(   $('#val_pajak').val()    ).toFixed(2) );
-					};
-							$('#val_denda_mask').val(formatRupiahCurrency( parseFloat($('#val_denda').val() )) );
-							$('#totalBayar_mask').val(formatRupiahCurrency( parseFloat($('#totalBayar').val() )) );					
-				}
-			});
-
-		
 		
 		i=0; k=0; j=0;;
 		dataupdate = new Array(); datecreate=new Array();
@@ -224,7 +236,7 @@
 			{
 				$.ajax
 				({
-						url: "<?php echo WS_JQGRID ?>transaksi.cust_acc_trans_controller/update_data",
+						url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/update_data",
 						datatype: "json",
 						type: "POST",
 						data:
@@ -241,6 +253,7 @@
 						}
 				});
 			}
+		
 	});
 
     jQuery(function($) {

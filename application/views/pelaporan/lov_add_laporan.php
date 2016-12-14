@@ -280,13 +280,14 @@
 				type: "POST",
 				data: 
 				{
-						nowdate:moment($('#datepicker').val()).format("YYYY-MM-"),
-						getdate:moment($('#datepicker').val()).format("MM-YYYY")
+						nowdate:moment($('#datepicker').val()).format("YYYY-DD-"),
+						getdate:moment($('#datepicker').val()).format("DD-YYYY")
 				},
 				success: function (response) 
 				{
 					var data = $.parseJSON(response);
 					kelipatan_denda = data.rows[0].booldendamonth - 1;
+					alert(kelipatan_denda);
 					if(parseInt(data.rows[0].booldenda) >= 0)
 					{
 						if(parseInt(kelipatan_denda > 24)){
@@ -427,7 +428,7 @@
 						
 						$.ajax
 						({
-							url: "<?php echo WS_JQGRID ?>transaksi.t_vat_settlement_controller/createSPTPD",
+							url: "<?php echo WS_JQGRID ?>pelaporan.pelaporan_pajak_controller/createSPTPD",
 							datatype: "json",            
 							type: "POST",
 							data: 
