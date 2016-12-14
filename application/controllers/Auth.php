@@ -25,13 +25,24 @@ class Auth extends CI_Controller {
             redirect(base_url().'auth');
         }
 
-        $sql = "select p_app_user_id as user_id,
+        /*$sql = "select p_app_user_id as user_id,
                     app_user_name as user_name,
                     user_pwd as user_password,
                     email_address as user_email,
                     full_name as user_realname,
                     p_user_status_id as user_status
-                    from sikp.p_app_user where app_user_name = ?";
+                    from sikp.p_app_user where app_user_name = ?";*/
+					
+		$sql = "SELECT a.t_customer_user_id as user_id, 
+					a.user_name, 
+					a.user_pwd as user_password,
+					b.email_address as user_email,
+					c.company_brand as user_realname,
+					a.p_user_status_id as user_status 
+                    from sikp.t_customer_user a 
+					left join t_customer b on b.t_customer_id = a.t_customer_id
+					left join t_cust_account c on c.t_customer_id = a.t_customer_id
+					where user_name = ?";								
 
         $query = $this->db->query($sql, array($username));
         $row = $query->row_array();
