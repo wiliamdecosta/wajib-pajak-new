@@ -18,14 +18,14 @@
                                 <ul class="contact">
                                     <li><p><i class="fa fa-map-marker"></i> <strong>Alamat:</strong> Jl.Wastukancana No.2-Bandung </p></li>
                                     <li><p><i class="fa fa-phone"></i> <strong>Telepon:</strong> (022) 423-5052</p></li>
-                                    <li><p><i class="fa fa-envelope"></i> <strong>Email:</strong> <a href="mailto:support@disyanjak.bandung.go.id">support@disyanjak.bandung.go.id</a></p></li>
+                                    <li><p><i class="fa fa-envelope"></i> <strong>Email:</strong> <a href="mailto:support@disyanjak.bandung.go.id">disyanjak.bandung.go.id</a></p></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <h4>Follow Kami</h4>
                             <ul class="social-icons">
-                                <li class="social-icons-facebook"><a href="https://www.facebook.com/pages/Disyanjak-kota-bandung/1522255291359771" target="_blank" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                <!--<li class="social-icons-facebook"><a href="https://www.facebook.com/pages/Disyanjak-kota-bandung/1522255291359771" target="_blank" title="Facebook"><i class="fa fa-facebook"></i></a></li> -->
                                 <li class="social-icons-twitter"><a href="https://twitter.com/disyanjakkotbdg" target="_blank" title="Twitter"><i class="fa fa-twitter"></i></a></li>
                             </ul>
                         </div>
