@@ -16,7 +16,7 @@
                         data-bgfit="cover"
                         data-bgrepeat="no-repeat"
                         class="rev-slidebg">
-                </li> -->
+                </li> 
 				
 				
                 <li data-transition="fade">
@@ -26,10 +26,10 @@
                         data-bgfit="cover"
                         data-bgrepeat="no-repeat"
                         class="rev-slidebg">
-                </li>
+                </li> -->
 				
 				<li data-transition="fade">
-                    <img src="slider/slide2.jpg"
+                    <img src="slider/slide3.jpg"
                         alt=""
                         data-bgposition="center center"
                         data-bgfit="cover"
