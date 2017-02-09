@@ -901,8 +901,15 @@ class Pelaporan_pajak_controller {
                         $sql="select f_gen_vat_dtl_trans(".$message[0]['o_vat_set_id'].",'".$user_name."')";   
 						$messageq = $table->db->query($sql);
 						$message1 = $messageq->result_array();
-                    }
-                    $data['success'] = true;
+						$data['success'] = true;
+                    }else {
+						$data['success'] = false;
+						$data['items'] = array();
+						$data['message'] = $message1;
+						echo json_encode($data);
+						exit;
+					}
+                    
                 }
 
 				$data['items'] = $messagefinal[0];

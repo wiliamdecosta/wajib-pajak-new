@@ -53,11 +53,11 @@ function formatRupiahCurrency(total) {
 }
 $("#generatetable").on('click',function() 
 	{
-
+		$a = 
 		jQuery("#grid-table").jqGrid('setGridParam', {
                         url: '<?php echo WS_JQGRID."pelaporan.pelaporan_pajak_controller/getdata"; ?>',
                         datatype: 'json',
-                        postData: {nowdate:moment($('#datepicker').val()).format("DD/MM/YYYY")}
+                        postData: {nowdate:$('#datepicker').val()}
                         // userData: {row: rowid}
                     });
 					jQuery("#grid-table").trigger("reloadGrid");

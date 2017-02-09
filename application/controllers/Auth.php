@@ -40,9 +40,10 @@ class Auth extends CI_Controller {
 					c.company_brand as user_realname,
 					a.p_user_status_id as user_status 
                     from sikp.t_customer_user a 
-					left join t_customer b on b.t_customer_id = a.t_customer_id
-					left join t_cust_account c on c.t_customer_id = a.t_customer_id
-					where user_name = ?";								
+					join t_customer b on b.t_customer_id = a.t_customer_id
+					join t_cust_account c on c.t_customer_id = a.t_customer_id
+					join p_app_user d on a.p_app_user_id = d.p_app_user_id
+					where d.app_user_name = ?";								
 
         $query = $this->db->query($sql, array($username));
         $row = $query->row_array();
