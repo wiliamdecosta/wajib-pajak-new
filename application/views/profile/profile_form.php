@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label" for="user_email">Email</label>
                             <div class="col-md-4">
-                                <input type="text" name="user_email" class="form-control required" value="<?php  echo $this->session->userdata('user_email'); ?>">
+                                <input type="text" name="user_email" class="form-control" value="<?php  echo $this->session->userdata('user_email'); ?>">
                             </div>
                         </div>
 
