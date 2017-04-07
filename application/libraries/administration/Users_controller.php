@@ -20,7 +20,7 @@ class Users_controller{
             $table = $ci->users;
 
             if(empty($user_id)) throw new Exception('ID tidak boleh kosong');
-            if(empty($user_email)) throw new Exception('Email tidak boleh kosong');
+            // if(empty($user_email)) throw new Exception('Email tidak boleh kosong');
 
             $item = $table->get($user_id);
             if($item == null) throw new Exception('ID tidak ditemukan');
